@@ -11,10 +11,11 @@ from sessions import get_count_plants
 
 @app.route('/')
 def home():
-    # session['cart'] = [] #### TODO
+    # session['cart'] = {} #### TODO
     db_sess = db_session.create_session()
     products = get_popular_plants(db_sess)
     return render_template('index.html', products=products, session=session, count=get_count_plants(session['cart']) if 'cart' in session else 0)
+
 
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
@@ -32,15 +33,14 @@ def add_to_cart():
     else:
         cart[product_id] = 1  # Добавляем новый товар с количеством 1
 
-    session['cart'] = cart  # Обновляем данные сессии
-    print(cart)
+    session.modified = True  # Обозначаем, что сессия изменена
     return jsonify(cart=cart)  # Возвращаем JSON с обновлённой корзиной
 
 
 @app.route('/remove_from_cart', methods=['POST'])
 def remove_from_cart():
     product_id = request.json.get('product_id')
-
+    print(product_id)
     # Проверяем, что корзина существует
     if 'cart' not in session:
         return jsonify(error='Корзина пуста'), 400
@@ -55,11 +55,9 @@ def remove_from_cart():
     else:
         return jsonify(error='Товар не найден в корзине'), 400
 
-    session['cart'] = cart  # Обновляем данные сессии
-    print('remove:', cart)
-
-    return jsonify(cart=cart)
-    
+    print(cart)
+    session.modified = True  # Обозначаем, что сессия изменена
+    return jsonify(cart=cart) 
 
 # Маршрут для показа карточки товара
 @app.route('/plant/<int:plant_id>')

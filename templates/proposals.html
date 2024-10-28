@@ -13,33 +13,29 @@
                 <h3>{{ product.name }}</h3>
                 <p class="category">{{ product.category }}</p>
                 {% if product.sale > 0 %}
-                <span class="price original-price">{{ product.price }} ₽</span>
-                <span class="price discounted-price">{{ product.price * (1 - (product.sale / 100)) }} ₽</span>
+                    <span class="price original-price">{{ product.price }} ₽</span>
+                    <span class="price discounted-price">{{ product.price * (1 - (product.sale / 100)) }} ₽</span>
                 {% else %}
                 <span class="price">{{ product.price }} ₽</span>
                 {% endif %}
             </div>
-            {% if 'cart' in session %}
-                {% set quantity = session['cart'].get(product.id, 0) %}
-            {% else %} <!-- Получаем количество товара из сессии -->
-                {% set quantity = 0 %}
-            {% endif %}
+            {% set quantity = session.get('cart', {}).get(product.id|string, 0) %}
             {% if quantity > 0 %}
-                <a class="add-to-cart" data-plant-id="{{ product.id }}" style="display: none;">
+                <a class="add-to-cart" data-plant-id="{{ product.id }}" style="display: none">
                     Добавить в корзину
                 </a>
-                <div class="quantity-control" style="display: block;">
+                <div class="quantity-control" style="display: flex">
                     <button class="quantity-btn decrease" data-plant-id="{{ product.id }}">-</button>
                     <span class="quantity">{{ quantity }}</span>
                     <button class="quantity-btn increase" data-plant-id="{{ product.id }}">+</button>
                 </div>
             {% else %}
-                <a class="add-to-cart" data-plant-id="{{ product.id }}" style="display: block;">
+                <a class="add-to-cart" data-plant-id="{{ product.id }}">
                     Добавить в корзину
                 </a>
-                <div class="quantity-control" style="display: none;">
+                <div class="quantity-control">
                     <button class="quantity-btn decrease" data-plant-id="{{ product.id }}">-</button>
-                    <span class="quantity">{{ quantity }}</span>
+                    <span class="quantity">0</span>
                     <button class="quantity-btn increase" data-plant-id="{{ product.id }}">+</button>
                 </div>
             {% endif %}
