@@ -1,0 +1,40 @@
+/* CSS Reset */
+/* main.css */
+
+/* Устанавливаем общий стиль для всего тела документа */
+body {
+  font-family: 'Tiro Bangla', 'Microsoft Sans Serif', sans-serif; /* Шрифты с запасом */
+  font-size: 16px; /* Установите размер шрифта по умолчанию */
+  line-height: 1.5; /* Увеличение межстрочного расстояния */
+  margin: 0; /* Убираем отступы по умолчанию */
+  padding: 0px 10% 0px 10%; /* Убираем поля по умолчанию */
+}
+
+/* Стили для секций */
+.section {
+  position: relative;
+  bottom: 0;
+  margin-bottom: 4%; /* Отступ в 5% между секциями */
+  padding: 0px; /* Дополнительные отступы внутри секций (можно настроить) */
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+  border-radius: 0px; /* Скругленные углы для секций (по желанию) */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+/* Основной стиль для header */
+header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  top: 0px;
+  /* left: 10%; */
+  /* right: 10%; */
+  /* align-content: center; */
+}

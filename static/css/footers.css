@@ -1,0 +1,50 @@
+footer {
+    background-color: rgba(68, 41, 56, 1); /* Цвет фона футера */
+    color: white; /* Цвет текста */
+    padding: 20px; /* Отступы внутри футера */
+    text-align: center; /* Центрирование текста */
+    width: 130%; /* Устанавливаем ширину футера на 100% */
+    position: relative; /* Устанавливаем относительное позиционирование */
+    bottom: 0; /* Привязываем футер к низу */
+    left: -15%;
+}
+
+.footers {
+    max-width: 1200px; /* Максимальная ширина футера */
+    margin: 0 auto; /* Центрирование футера */
+    display: flex; /* Используем Flexbox для выравнивания элементов */
+    flex-direction: column; /* Устанавливаем вертикальное выравнивание */
+    align-items: center; /* Центрируем элементы по горизонтали */
+}
+
+.footer-v9_8 {
+    display: flex; /* Используем Flexbox для выравнивания элементов */
+    justify-content: center; /* Центрируем элементы по горизонтали */
+    flex-wrap: wrap; /* Позволяем элементам переноситься на новую строку при недостатке места */
+    margin: 10px 0; /* Отступы между строками */
+}
+
+.footer-text-light {
+    margin: 0 15px; /* Горизонтальные отступы между элементами */
+    font-size: 16px; /* Размер шрифта */
+}
+
+
+.footer-logo {
+    font-size: 50px;
+    font-family: 'Microsoft Sans Serif', sans-serif;
+    color: rgba(217, 217, 217, 1);
+}
+
+.footer-nav-link {
+    font-family: 'Tiro Bangla', sans-serif;
+    font-size: 18px; /* Изменить при необходимости */
+    color: rgba(255, 255, 255, 1);
+    text-decoration: none;
+    white-space: nowrap; /* Запретить перенос текста */
+  }
+  
+.footer-nav-link:hover {
+cursor: pointer;
+color: rgb(255, 232, 232);
+}

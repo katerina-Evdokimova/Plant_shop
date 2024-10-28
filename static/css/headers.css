@@ -1,0 +1,68 @@
+/* Основной стиль для header */
+header .header-style {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 20px; /* Отступы сверху и снизу */
+  /* background-color: #f8f8f8; Цвет фона */
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); Тень для отделения от страницы */
+  width: 100%;
+}
+
+/* Логотип */
+.logo {
+  font-size: 50px;
+  font-family: 'Microsoft Sans Serif', sans-serif;
+  color: rgba(44, 90, 26, 1);
+}
+
+/* Ссылки навигации */
+.v9_8 {
+  display: flex;
+  gap: 10%; /* Расстояние между ссылками */
+}
+
+.nav-link {
+  font-family: 'Tiro Bangla', sans-serif;
+  font-size: 18px; /* Изменить при необходимости */
+  color: rgba(0, 0, 0, 0.55);
+  text-decoration: none;
+  white-space: nowrap; /* Запретить перенос текста */
+}
+
+.nav-link:hover {
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+/* Иконки справа */
+.icon-container {
+  display: flex;
+  gap: 15px; /* Отступ между иконками */
+  margin-left: 10%;
+}
+
+.icon-container img {
+  width: 80%; /* Ширина иконки */
+  height: 80%; /* Высота иконки */
+  cursor: pointer; /* Изменение курсора при наведении */
+}
+
+.icon-cart {
+  position: relative;
+}
+
+.cart-count {
+  position: absolute;
+  top: 12px; /* Позиция по вертикали */
+  right: 50px; /* Позиция по горизонтали */
+  background-color: rgba(210, 58, 1, 1); /* Цвет фона */
+  color: white; /* Цвет текста */
+  border-radius: 50%; /* Округлые углы */
+  width: 20px; /* Ширина счетчика */
+  height: 20px; /* Высота счетчика */
+  display: flex;
+  justify-content: center; /* Центрирование текста по горизонтали */
+  align-items: center; /* Центрирование текста по вертикали */
+  font-size: 12px; /* Размер шрифта */
+}

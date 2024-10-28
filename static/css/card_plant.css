@@ -1,0 +1,98 @@
+.detailed-product-card {
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.detailed-product-image {
+    width: 40%; /* Ширина изображения */
+    height: 500px; /* Высота изображения */
+    background-color: rgba(44, 90, 26, 0.66); /* Цвет фона, если нет изображения */
+    background-size: cover; /* Увеличение изображения для заполнения области */
+    background-position: center; /* Центрирование изображения */
+}
+
+.detailed-product-info {
+    padding: 20px;
+    width: 60%; /* Ширина информации о продукте */
+}
+
+.product-name {
+    font-size: 24px; /* Размер шрифта для названия */
+    margin-bottom: 10px;
+}
+
+.product-description {
+    font-size: 16px; /* Размер шрифта для описания */
+    margin-bottom: 15px;
+}
+
+.category, .price {
+    font-size: 16px; /* Размер шрифта для категории и цены */
+    margin-bottom: 10px;
+}
+
+.add-to-cart {
+    background-color: #4CAF50; /* Цвет кнопки */
+    color: white; /* Цвет текста */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-to-cart:hover {
+    background-color: #45a049; /* Цвет кнопки при наведении */
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.quantity-btn {
+    background-color: #f0f0f0; /* Цвет кнопок управления количеством */
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.quantity {
+    margin: 0 10px;
+    font-size: 16px; /* Размер шрифта для количества */
+}
+
+
+/* Зачеркнутая цена */
+.original-price {
+    text-decoration: line-through;
+    opacity: 0.5; /* Полупрозрачная цена */
+    font-size: 0.9em; /* Чуть меньший шрифт */
+    margin-right: 10px;
+}
+
+/* Итоговая цена (со скидкой) */
+.discounted-price {
+    color: rgba(210, 58, 1, 1); /* Красная цена */
+    font-size: 1.5em;
+}
+
+/* Бейдж скидки */
+.discount-badge {
+    position: absolute;
+    top: 2%;
+    background-color: rgba(210, 58, 1, 1); /* Красный прямоугольник */
+    color: white;
+    font-family: 'Tiro Bangla', serif; /* Шрифт Tiro Bangla */
+    padding: 5px 10px;
+    font-size: 1.2em;
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

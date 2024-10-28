@@ -1,0 +1,195 @@
+/* Общий контейнер для карточек товаров */
+.proposals-section {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px; /* Отступы между карточками */
+    row-gap: 20px;
+}
+.proposals-title {
+    font-family: 'Microsoft Sans Serif',  sans-serif;
+    font-size: 34px; /* Размер шрифта */
+    color: rgba(0, 0, 0, 1); /* Цвет заголовка */
+    margin-bottom: 30px; /* Отступ снизу для отделения от карточек */
+    text-align: left; /* Центрирование текста */
+}
+/* Карточка продукта */
+.product-card {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 30%; /* Каждая карточка занимает около 30% ширины контейнера */
+    background-color: white;
+    /* border: 1px solid #ddd; */
+    overflow: hidden;
+    /* padding: 5px; */
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.click-product-card {
+    display: block;
+    position: relative;
+    width: 100%; /* Каждая карточка занимает около 30% ширины контейнера */
+    background-color: white;
+    /* border: 1px solid #ddd; */
+    overflow: hidden;
+    /* padding: 5px; */
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    text-decoration: none; /* Убираем подчеркивание */
+    color: inherit;
+}
+/* Изображение продукта с фиксированным размером */
+.product-image {
+    width: 100%;
+    height: 240px; /* Фиксированная высота изображения */
+    object-fit: cover; /* Обрезаем изображение по размеру контейнера, сохраняя пропорции */
+    background-color: rgba(44, 90, 26, 0.66); /* Цвет фона, если нет изображения */
+    margin-bottom: 2%;
+}
+
+/* Если изображение отсутствует (файл не найден), применяем фон */
+.product-image:not([src]) {
+    background-color: rgba(44, 90, 26, 0.66); /* Цвет фона для пустого изображения */
+    display: block; /* Задаем блочный элемент */
+    content: ''; /* Чтобы блок оставался фиксированным по высоте и ширине */
+}
+
+/* Дополнительно для изображений с пустым значением */
+.product-image[src=""] {
+    background-color: rgba(44, 90, 26, 0.66); /* Цвет фона */
+    display: block; /* Задаем блочный элемент */
+    content: ''; /* Пустой блок */
+}
+
+/* Убираем стандартный значок, если изображение не найдено */
+.product-image::before {
+    content: none; /* Убираем иконку "изображение не найдено" */
+}
+
+/* Увеличение карточки при наведении */
+.product-card:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+/* Блок информации о продукте */
+.product-info {
+    text-align: left;
+
+}
+
+/* Название продукта */
+.product-info h3 {
+    font-size: 1.5em;
+    margin-bottom: 1%;
+}
+
+/* Категория */
+.category {
+    font-size: 1.2em;
+    color: #666;
+}
+
+/* Цена */
+.price {
+    font-size: 1.5em;
+    color: #000;
+}
+
+/* Зачеркнутая цена */
+.original-price {
+    text-decoration: line-through;
+    opacity: 0.5; /* Полупрозрачная цена */
+    font-size: 0.9em; /* Чуть меньший шрифт */
+    margin-right: 10px;
+}
+
+/* Итоговая цена (со скидкой) */
+.discounted-price {
+    color: rgba(210, 58, 1, 1); /* Красная цена */
+    font-size: 1.5em;
+}
+
+/* Бейдж скидки */
+.discount-badge {
+    position: absolute;
+    top: 2%;
+    background-color: rgba(210, 58, 1, 1); /* Красный прямоугольник */
+    color: white;
+    font-family: 'Tiro Bangla', serif; /* Шрифт Tiro Bangla */
+    padding: 5px 10px;
+    font-size: 1.2em;
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Кнопка "Добавить в корзину" */
+.add-to-cart {
+    display: block;
+    text-align: center;
+    background-color: rgba(44, 90, 26, 0.66);
+    color: white;
+    padding: 10px 0;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+/* Изменение цвета при наведении на кнопку */
+.add-to-cart:hover {
+    background-color: rgba(44, 90, 26, 0.827);
+}
+
+/* Контроллер изменения количества товаров */
+.quantity-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Кнопки для изменения количества */
+.quantity-btn {
+    background-color: #ddd;
+    border: none;
+    padding: 5px 10px;
+    font-size: 1.2em;
+    cursor: pointer;
+    /* margin: 0 10px; */
+}
+
+.quantity-btn:hover {
+    background-color: #ccc;
+}
+
+/* Текущий счетчик товаров */
+.quantity {
+    font-size: 1.2em;
+    width: 30px;
+    text-align: center;
+}
+
+.catalog-button-container {
+    /* align-content: center; */
+    text-align: center; /* Центрируем кнопку */
+    margin-top: 20px; /* Отступ сверху */
+    position: relative;
+    left: 40%;
+}
+
+.catalog-button {
+    display: inline-block; /* Чтобы кнопка располагалась как блок */
+    padding: 10px 20px; /* Отступы внутри кнопки */
+    background-color: rgba(68, 41, 56, 1); /* Цвет фона кнопки */
+    color: white; /* Цвет текста */
+    text-decoration: none; /* Убираем подчеркивание */
+    font-size: 16px; /* Размер шрифта */
+}
+
+.catalog-button:hover {
+    background-color: rgb(58, 35, 48); /* Цвет фона при наведении */
+}

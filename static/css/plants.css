@@ -1,0 +1,77 @@
+/* Общий контейнер для карточек */
+.plant-cards {
+    display: flex;
+    justify-content: space-between; /* Равномерное распределение карточек по строке */
+    gap: 40px; /* Отступы между карточками */
+    /* padding: 20px; */
+    /* flex-wrap: wrap; Позволяем карточкам обтекать, если не помещаются на строке */
+}
+
+/* Основной стиль для карточек растений */
+.plant-card, .plant-card-big {
+    display: flex;
+    flex-direction: column; /* Размещаем изображение сверху, а текст снизу */
+    text-align: left;
+    text-decoration: none; /* Убираем подчеркивание ссылок */
+    color: black; /* Цвет текста */
+    transition: transform 0.3s, box-shadow 0.3s; /* Плавный переход при наведении */
+    cursor: pointer; /* Курсор в виде руки при наведении */
+}
+
+/* Эффект при наведении на карточку */
+.plant-card:hover, .plant-card-big:hover {
+    transform: scale(1.05); /* Легкое увеличение при наведении */
+}
+
+/* Размеры карточек */
+.plant-card {
+    width: 25%; /* Карточки для фикусов и суккулентов занимают 25% ширины */
+}
+
+.plant-card-big {
+    width: 50%; /* Карточка "Пальмы" занимает 50% ширины */
+}
+
+/* Стили для изображений растений */
+.plant-image {
+    height: 240px; /* Фиксированная высота изображения */
+    background-size: cover; /* Картинка заполняет все пространство */
+    background-position: center;
+}
+
+/* Если картинка отсутствует, заливаем цветом */
+.plant-image:empty {
+    background-color: rgba(44, 90, 26, 0.66); /* Цвет фона, если нет изображения */
+}
+
+/* Специфические стили для разных изображений */
+.fikus-image {
+    background-image: url('/static/images/fikus.png'); /* Замени путь на реальный */
+}
+
+.sukulent-image {
+    background-image: url('/static/images/sukulent.png');
+}
+
+.palmy-image {
+    background-image: url('/static/images/palmy.png');
+}
+
+/* Информация о растении */
+.plant-info {
+    margin-top: 15px;
+}
+
+/* Стили для заголовков и подзаголовков */
+.plant-title {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 1); /* Черный цвет для заголовков */
+}
+
+.plant-description-fikus, .plant-description-sukulent, .plant-description-palmy {
+    display: block;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.55); /* Полупрозрачный черный для подзаголовков */
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин PLANT | {{ plant.name }}</title>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"> -->
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/headers.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/card_plant.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/footers.css') }}" rel="stylesheet" />
+</head>
+<body>
+    <div class="aaa">
+        <div class="section">{% include 'header.html' %}</div>
+        <div class="section">
+            <div class="proposals-section">
+                <div class="detailed-product-card">
+                    {% if plant.sale > 0 %}
+                        <div class="discount-badge">
+                            {{ plant.sale }}%
+                        </div>
+                    {% endif %}
+                    <img src="{{ url_for('static', filename=plant.picture) }}" alt="{{ plant.name }}" class="detailed-product-image">
+                    <div class="detailed-product-info">
+                        <h2 class="product-name">{{ plant.name }}</h2>
+                        <p class="product-description">{{ plant.description }}</p>
+                        <p class="category">Категория: <span>{{ plant.category }}</span></p> <!-- Замените на правильное свойство -->
+                        <p class="category">Осталось: <span>{{ plant.quantity }}</span></p> <!-- Замените на правильное свойство -->
+                        <p class="price">
+                            {% if plant.sale %}
+                                <span class="original-price">{{ plant.price }} ₽</span>
+                            {% endif %}
+                            <span class="discounted-price">{{ plant.price - plant.sale }} ₽</span>
+                        </p>
+                        <button class="add-to-cart" data-plant-id="{{ plant.id }}">Добавить в корзину</button>
+                        <div class="quantity-control" style="display: none;">
+                            <button class="quantity-btn decrease">-</button>
+                            <span class="quantity">1</span>
+                            <button class="quantity-btn increase">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section">{% include 'footer.html' %}</div>
+    </div>
+    <script src="{{ url_for('static', filename='js/shop.js') }}"></script>
+</body>
+</html>
