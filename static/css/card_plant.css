@@ -48,15 +48,17 @@
 }
 
 .quantity-control {
-    display: flex;
+    display: none;
     align-items: center;
     margin-top: 10px;
 }
 
 .quantity-btn {
-    background-color: #f0f0f0; /* Цвет кнопок управления количеством */
-    border: 1px solid #ccc;
     padding: 5px 10px;
+    margin: 0 5px;
+    border: 1px solid rgba(44, 90, 26, 0.66);
+    background-color: rgba(44, 90, 26, 0.66);
+    border-radius: 5px;
     cursor: pointer;
 }
 

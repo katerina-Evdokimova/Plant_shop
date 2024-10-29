@@ -3,19 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Магазин PLANT | {{ plant.name }}</title>
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"> -->
+    <title>Магазин PLANT | Корзина</title>
     <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='css/headers.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/card_plant.css') }}" rel="stylesheet" />
+    <!-- <link href="{{ url_for('static', filename='css/card_plant.css') }}" rel="stylesheet" /> -->
+    <link href="{{ url_for('static', filename='css/trash.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='css/footers.css') }}" rel="stylesheet" />
 </head>
 <body>
     <div class="aaa">
         <div class="section">{% include 'header.html' %}</div>
-        <div class="section"></div>
-        <div class="section">{% include 'footer.html' %}</div>
+        <div class="section">
+            <h1>Корзина</h1>
+            <div class="cart-items">
+                <!-- Пример товара из переменной plants -->
+                {% for plant in plants %}
+                <div class="cart-item {% if plant.quantity == 0 %}out-of-stock{% endif %}" data-id="{{ plant.id }}">
+                    <img src="{{ url_for('static', filename=plant.picture) }}" alt="{{ plant.name }}" class="item-image">
+                    <div class="item-details">
+                        <h2 class="item-name">{{ plant.name }}</h2>
+                        <p class="item-description">{{ plant.category }}</p>
+                        <p class="item-price">
+                            {% if plant.sale > 0 %}
+                                <span class="original-price">{{ plant.price }} ₽</span>
+                                <span class="discounted-price">{{ plant.price * (1 - (plant.sale / 100)) }} ₽</span>
+                             {% else %}
+                                <span class="price">{{ plant.price }} ₽</span>
+                            {% endif %}
+                        </p>
+                        {% if plant.quantity|int > 0 %}
+                            <div class="quantity-control">
+                                <button class="quantity-btn decrease" data-plant-id="{{ plant.id }}">-</button>
+                                <span class="quantity">{{ session.get('cart', {}).get(plant.id|string, 0) }}</span>
+                                <button class="quantity-btn increase" data-plant-id="{{ plant.id }}">+</button>
+                            </div>
+                        {% else %}
+                        <div class="out-of-stock-text">Товар закончился</div>
+                        {% endif %}
+                    </div>
+                    <button class="remove-button" title="Удалить товар" data-plant-id="{{ plant.id }}">
+                        <img src="{{ url_for('static', filename='images/trash.png') }}" alt="Удалить" class="remove-icon">
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
+    {% include 'footer.html' %}
     <script src="{{ url_for('static', filename='js/shop.js') }}"></script>
 </body>
 </html>

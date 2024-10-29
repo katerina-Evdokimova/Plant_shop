@@ -3,44 +3,65 @@
 {% endif %}   
 <div class="proposals-section">
     {% for product in products[:6] %}
-    <div class="product-card">
-        <a href="plant/{{ product.id }}" class="click-product-card">
-            {% if product.sale > 0 %}
-            <div class="discount-badge">{{ product.sale }}%</div>
-            {% endif %}
-            <img src="{{ url_for('static', filename=product.picture) }}" alt="{{ product.name }}" class="product-image">
-            <div class="product-info">
-                <h3>{{ product.name }}</h3>
-                <p class="category">{{ product.category }}</p>
-                {% if product.sale > 0 %}
-                    <span class="price original-price">{{ product.price }} ₽</span>
-                    <span class="price discounted-price">{{ product.price * (1 - (product.sale / 100)) }} ₽</span>
-                {% else %}
-                <span class="price">{{ product.price }} ₽</span>
-                {% endif %}
+        {% if product.quantity|int > 0 %} 
+            <div class="product-card">
+                <a href="plant/{{ product.id }}" class="click-product-card">
+                    {% if product.sale > 0 %}
+                    <div class="discount-badge">{{ product.sale }}%</div>
+                    {% endif %}
+                    <img src="{{ url_for('static', filename=product.picture) }}" alt="{{ product.name }}" class="product-image">
+                    <div class="product-info">
+                        <h3>{{ product.name }}</h3>
+                        <p class="category">{{ product.category }}</p>
+                        {% if product.sale > 0 %}
+                            <span class="price original-price">{{ product.price }} ₽</span>
+                            <span class="price discounted-price">{{ product.price * (1 - (product.sale / 100)) }} ₽</span>
+                        {% else %}
+                        <span class="price">{{ product.price }} ₽</span>
+                        {% endif %}
+                    </div>
+                        {% set quantity = session.get('cart', {}).get(product.id|string, 0) %}
+                        {% if quantity > 0 %}
+                            <a class="add-to-cart" data-plant-id="{{ product.id }}" style="display: none">
+                                Добавить в корзину
+                            </a>
+                            <div class="quantity-control" style="display: flex">
+                                <button class="quantity-btn decrease" data-plant-id="{{ product.id }}">-</button>
+                                <span class="quantity">{{ quantity }}</span>
+                                <button class="quantity-btn increase" data-plant-id="{{ product.id }}">+</button>
+                            </div>
+                        {% else %}
+                            <a class="add-to-cart" data-plant-id="{{ product.id }}">
+                                Добавить в корзину
+                            </a>
+                            <div class="quantity-control">
+                                <button class="quantity-btn decrease" data-plant-id="{{ product.id }}">-</button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn increase" data-plant-id="{{ product.id }}">+</button>
+                            </div>
+                        {% endif %}
+                </a>
             </div>
-            {% set quantity = session.get('cart', {}).get(product.id|string, 0) %}
-            {% if quantity > 0 %}
-                <a class="add-to-cart" data-plant-id="{{ product.id }}" style="display: none">
-                    Добавить в корзину
+        {% else %}
+            <div class="product-card-none">
+                <a href="plant/{{ product.id }}" class="click-product-card">
+                    {% if product.sale > 0 %}
+                    <div class="discount-badge">{{ product.sale }}%</div>
+                    {% endif %}
+                    <img src="{{ url_for('static', filename=product.picture) }}" alt="{{ product.name }}" class="product-image">
+                    <div class="product-info">
+                        <h3>{{ product.name }}</h3>
+                        <p class="category">{{ product.category }}</p>
+                        {% if product.sale > 0 %}
+                            <span class="price original-price">{{ product.price }} ₽</span>
+                            <span class="price discounted-price">{{ product.price * (1 - (product.sale / 100)) }} ₽</span>
+                        {% else %}
+                        <span class="price">{{ product.price }} ₽</span>
+                        {% endif %}
+                    </div>
                 </a>
-                <div class="quantity-control" style="display: flex">
-                    <button class="quantity-btn decrease" data-plant-id="{{ product.id }}">-</button>
-                    <span class="quantity">{{ quantity }}</span>
-                    <button class="quantity-btn increase" data-plant-id="{{ product.id }}">+</button>
-                </div>
-            {% else %}
-                <a class="add-to-cart" data-plant-id="{{ product.id }}">
-                    Добавить в корзину
-                </a>
-                <div class="quantity-control">
-                    <button class="quantity-btn decrease" data-plant-id="{{ product.id }}">-</button>
-                    <span class="quantity">0</span>
-                    <button class="quantity-btn increase" data-plant-id="{{ product.id }}">+</button>
-                </div>
-            {% endif %}
-        </a>
-    </div>
+            </div>
+        {% endif %}
     {% endfor %}
     <!-- Кнопка перейти в каталог -->
     <div class="catalog-button-container">
