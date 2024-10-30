@@ -1,10 +1,14 @@
 /* Общий контейнер для карточек товаров */
 .proposals-section {
-    display: flex;
-    justify-content: space-between;
+    /* display: flex;
+    justify-content: space-between; *
+    /
     flex-wrap: wrap;
     gap: 10px; /* Отступы между карточками */
-    row-gap: 20px;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr)); /* Автоматическое распределение карточек */
+    gap: 20px;
 }
 .proposals-title {
     font-family: 'Microsoft Sans Serif',  sans-serif;
@@ -15,10 +19,10 @@
 }
 /* Карточка продукта */
 .product-card {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    width: 30%; /* Каждая карточка занимает около 30% ширины контейнера */
+    /* display: flex;
+    flex-direction: column; */
+    /* position: relative; */
+    /* width: 30%; Каждая карточка занимает около 30% ширины контейнера */
     background-color: white;
     /* border: 1px solid #ddd; */
     overflow: hidden;
@@ -179,9 +183,16 @@
 .catalog-button-container {
     /* align-content: center; */
     text-align: center; /* Центрируем кнопку */
-    margin-top: 20px; /* Отступ сверху */
+    margin-top: 5; /* Отступ сверху */
     position: relative;
-    left: 40%;
+    left: 100%;
+}
+.load-more-button-container {
+    /* align-content: center; */
+    text-align: center; /* Центрируем кнопку */
+    margin-top: 5%; /* Отступ сверху */
+    position: relative;
+    left: 0%;
 }
 
 .catalog-button {
@@ -199,10 +210,10 @@
 
 /* Карточка недоступного товара */
 .product-card-none {
-    position: relative;
+    /* position: relative;
     display: flex;
     flex-direction: column;
-    width: 30%;
+    width: 30%; */
     background-color: #f8f8f8; /* Немного серый фон для недоступных товаров */
     overflow: hidden;
     cursor: default; /* Курсор по умолчанию, т.к. товар недоступен */
@@ -211,12 +222,12 @@
 
 .product-card-none::after {
     content: 'Товар закончился'; /* Текст на полупрозрачной плашке */
-    position: absolute;
+    /* position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(44, 90, 26, 0.327); /* Полупрозрачная черная плашка */
+    left: 0; */
+    /* width: 100%;
+    height: 100%; */
+    background-color: rgba(44, 90, 26, 0.327);
     color: white;
     font-size: 24px;
     display: flex;
@@ -238,4 +249,81 @@
 
 .product-card-none .product-info {
     opacity: 0.5; /* Полупрозрачная информация о товаре */
+}
+
+/* Контейнер для фильтра, вне секции товаров */
+.filter-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px; /* Отступ снизу, чтобы фильтр был над товарами */
+    padding-left: 10px;  /* Отступы для фильтра, если требуется */
+}
+
+/* Кнопка фильтра */
+.filter-button {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 4px; /* Закругленные края кнопки */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Легкая тень для кнопки */
+}
+
+/* Иконка фильтра */
+.filter-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Стрелка для направления сортировки */
+.sort-arrow {
+    margin-left: 10px;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+}
+
+/* Стрелка вверх (по возрастанию) */
+.sort-arrow.asc {
+    border-bottom: 5px solid black;
+}
+
+/* Стрелка вниз (по убыванию) */
+.sort-arrow.desc {
+    border-top: 5px solid black;
+}
+
+/* Выпадающее меню для сортировки */
+.filter-dropdown {
+    display: none; /* По умолчанию скрыто */
+    position: absolute;
+    background-color: white;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Тень для выпадающего меню */
+    z-index: 1;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    width: 250px; /* Ширина выпадающего меню */
+    top: 45px; /* Расположение ниже кнопки */
+    left: 0;
+}
+
+/* Стили для ссылок сортировки */
+.filter-dropdown a {
+    display: block;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.filter-dropdown a:hover {
+    background-color: #f1f1f1;
 }

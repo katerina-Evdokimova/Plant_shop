@@ -1,6 +1,9 @@
 from sqlalchemy.orm import Session, joinedload
+from sqlalchemy import case, asc, desc
 from sqlalchemy.exc import NoResultFound
 from data.plant import Plant
+from sqlalchemy import func
+from data.order_items import OrderItem 
 
 def get_plant_by_id(session: Session, product_id: int):
     """
@@ -16,9 +19,34 @@ def get_plant_by_id(session: Session, product_id: int):
         return product
     except NoResultFound:
         return None
-    
-from sqlalchemy import func
-from data.order_items import OrderItem 
+
+def get_plants(session: Session, sort_by_price: str = None):
+    try:
+        # Создание базового запроса
+        query = session.query(Plant)
+        
+        # Базовая сортировка: сначала товары с большим количеством, затем товары с quantity=0 в конце
+        sort_conditions = [
+            case((Plant.quantity == 0, 1), else_=0),  # Товары с quantity=0 будут в конце
+            Plant.quantity.desc()  # Сначала товары с большим количеством
+        ]
+
+        # Применяем все условия сортировки в один вызов order_by()
+        query = query.order_by(*sort_conditions)
+
+        # Выполняем запрос и возвращаем результат
+        products = query.all()
+
+        # Проверка на сортировку по цене
+        if sort_by_price == 'asc':
+            products.sort(key=lambda x: x.price * (1 - (x.sale / 100)) if x.quantity and int(x.quantity) > 0 else float('inf') )
+        elif sort_by_price == 'desc':
+            # Добавляем условие сортировки по убыванию цены с учётом скидки
+            products.sort(key=lambda x: - x.price * (1 - (x.sale / 100)) if x.quantity and int(x.quantity) > 0 else 0)
+        
+        return products
+    except NoResultFound:
+        return None
 
 def get_popular_plants(session: Session):
 

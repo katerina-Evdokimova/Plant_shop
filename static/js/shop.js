@@ -148,4 +148,80 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     });
+
+    document.getElementById('load-more').addEventListener('click', function() {
+        let currentCount = document.querySelectorAll('.product-card').length + document.querySelectorAll('.product-card-none').length;
+    
+        fetch('/load-more-products', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ n: currentCount })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Вставляем новые продукты в раздел с товарами
+            document.querySelector('.proposals-section').insertAdjacentHTML('beforeend', data.templates);
+            // Проверяем, есть ли еще товары
+            if (data.has_more) {
+                document.getElementById('load-more').style.display = 'none'; // Скрыть кнопку
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    document.querySelectorAll('.filter-dropdown a').forEach(function(sortLink) {
+        sortLink.addEventListener('click', function(event) {
+            event.preventDefault();  // Отменяем переход по ссылке
+    
+            const sortParam = this.getAttribute('href').split('=')[1];  // Получаем значение сортировки (asc или desc)
+    
+            // Асинхронный запрос для получения отсортированных товаров
+            fetch(`/catalog/sort?sort=${sortParam}`,
+                {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ n: document.querySelectorAll('.product-card').length + document.querySelectorAll('.product-card-none').length })
+            })
+                .then(response => response.json())  // Получаем HTML с товарами
+                .then(data => {
+                    console.log("!!!data", data)
+                    // Обновляем содержимое секции товаров
+                    document.querySelector('.proposals-section').innerHTML = data.templates;
+                    console.log("done")
+                    // Обновляем стрелку сортировки
+                    const sortArrow = document.getElementById('sort-arrow');
+                    sortArrow.classList.remove('asc', 'desc');
+                    if (sortParam === 'asc') {
+                        sortArrow.classList.add('asc');
+                    } else if (sortParam === 'desc') {
+                        sortArrow.classList.add('desc');
+                    }
+                })
+                .catch(error => console.error('Ошибка при загрузке товаров:', error));
+        });
+    });
+
+
+// Показать или скрыть выпадающее меню
+document.getElementById('filter-button').addEventListener('click', function() {
+    var dropdown = document.getElementById('filter-dropdown');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+});
+
+// Закрытие меню при клике вне фильтра
+window.onclick = function(event) {
+    if (!event.target.matches('.filter-button')) {
+        var dropdowns = document.getElementsByClassName("filter-dropdown");
+        for (var i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.style.display === "block") {
+                openDropdown.style.display = "none";
+            }
+        }
+    }
+};
 });

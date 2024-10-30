@@ -20,7 +20,9 @@ class Plant(SqlAlchemyBase):
     category = orm.relationship('PlantCategory')
 
     def __str__(self):
-        return self.name 
+        return f'name: {self.name},\nprice: {self.price - (self.price * self.sale / 100)},\nsale: {self.sale}\n\n' 
     
     def __repr__(self):
-        return self.name
+        return f'name: {self.name},\nprice: {self.price - (self.price * self.sale / 100)},\nsale: {self.sale}\n\n' 
+ 
+

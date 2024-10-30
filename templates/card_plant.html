@@ -26,33 +26,42 @@
                         <h2 class="product-name">{{ plant.name }}</h2>
                         <p class="product-description">{{ plant.description }}</p>
                         <p class="category">Категория: <span>{{ plant.category }}</span></p> <!-- Замените на правильное свойство -->
-                        <p class="category">Осталось: <span>{{ plant.quantity }}</span></p> <!-- Замените на правильное свойство -->
+                        <p class="category">Осталось: <span>{{ plant.quantity|int }}</span></p> <!-- Замените на правильное свойство -->
                         <p class="price">
-                            {% if plant.sale %}
-                                <span class="original-price">{{ plant.price }} ₽</span>
+                            {% if plant.sale > 0 %}
+                                <span class="price original-price">{{ plant.price }} ₽</span>
+                                <span class="price discounted-price">{{ plant.price * (1 - (plant.sale / 100)) }} ₽</span>
+                            {% else %}
+                                <span class="price">{{ plant.price }} ₽</span>
                             {% endif %}
-                            <span class="discounted-price">{{ plant.price - plant.sale }} ₽</span>
                         </p>
-                        {% set quantity = session.get('cart', {}).get(plant.id|string, 0) %}
-                        {% if quantity > 0 %}
-                            <a class="add-to-cart" data-plant-id="{{ plant.id }}" style="display: none">
-                                Добавить в корзину
-                            </a>
-                            <div class="quantity-control" style="display: flex">
-                                <button class="quantity-btn decrease" data-plant-id="{{ plant.id }}">-</button>
-                                <span class="quantity">{{ quantity }}</span>
-                                <button class="quantity-btn increase" data-plant-id="{{ plant.id }}">+</button>
-                            </div>
+                        {% if plant.quantity|int > 0%}
+                            {% set quantity = session.get('cart', {}).get(plant.id|string, 0) %}
+                            {% if quantity > 0 %}
+                                <a class="add-to-cart" data-plant-id="{{ plant.id }}" style="display: none">
+                                    Добавить в корзину
+                                </a>
+                                <div class="quantity-control" style="display: flex">
+                                    <button class="quantity-btn decrease" data-plant-id="{{ plant.id }}">-</button>
+                                    <span class="quantity">{{ quantity }}</span>
+                                    <button class="quantity-btn increase" data-plant-id="{{ plant.id }}">+</button>
+                                </div>
+                            {% else %}
+                                <a class="add-to-cart" data-plant-id="{{ plant.id }}">
+                                    Добавить в корзину
+                                </a>
+                                <div class="quantity-control">
+                                    <button class="quantity-btn decrease" data-plant-id="{{ plant.id }}">-</button>
+                                    <span class="quantity">0</span>
+                                    <button class="quantity-btn increase" data-plant-id="{{ plant.id }}">+</button>
+                                </div>
+                            {% endif %}
                         {% else %}
-                            <a class="add-to-cart" data-plant-id="{{ plant.id }}">
-                                Добавить в корзину
+                            <a class="add-to-cart-none" data-plant-id="{{ plant.id }}">
+                                Товар закончился
                             </a>
-                            <div class="quantity-control">
-                                <button class="quantity-btn decrease" data-plant-id="{{ plant.id }}">-</button>
-                                <span class="quantity">0</span>
-                                <button class="quantity-btn increase" data-plant-id="{{ plant.id }}">+</button>
-                            </div>
                         {% endif %}
+
                     </div>
                 </div>
             </div>

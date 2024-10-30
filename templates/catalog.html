@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLANT | Каталог</title>
+    <link href="{{ url_for('static', filename='css/headers.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/proposals.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/footers.css') }}" rel="stylesheet" />
+</head>
+<body>
+    <div class="aaa">
+        <div class="section">{% include 'header.html' %}</div>
+        <div class="section">
+            <div class="filter-container">
+                <div class="filter-container">
+                    <button class="filter-button" id="filter-button">
+                        <img src="{{ url_for('static', filename='images/filter-icon.png') }}" alt="Фильтр" class="filter-icon"> 
+                        Фильтр
+                        <span id="sort-arrow" class="sort-arrow"></span>
+                    </button>
+                    <div class="filter-dropdown" id="filter-dropdown">
+                        <a href="catalog/sort?sort=asc" id="sort-asc">Сортировать по возрастанию цены</a>
+                        <a href="catalog/sort?sort=desc" id="sort-desc">Сортировать по убыванию цены</a>
+                    </div>
+                </div>
+            </div>
+            <div class="proposals-section">
+                {% include 'catalog_section.html' %}
+            </div>
+            <!-- Кнопка перейти в каталог -->
+            {% if products|length > n %}
+                <div class="load-more-button-container">
+                    <a href="javascript:void(0)" class="catalog-button" id="load-more">ПОКАЗАТЬ ЕЩЁ</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% include 'footer.html' %}
+    <script src="{{ url_for('static', filename='js/shop.js') }}"></script>
+
+</body>
+</html>

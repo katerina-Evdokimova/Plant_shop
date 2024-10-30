@@ -10,7 +10,7 @@ def home():
     # session['cart'] = {} #### TODO
     db_sess = db_session.create_session()
     products = get_popular_plants(db_sess)
-    return render_template('index.html', products=products, session=session)
+    return render_template('index.html', products=products, session=session, n=6)
 
 
 @app.route('/add_to_cart', methods=['POST'])

@@ -28,7 +28,11 @@
     font-size: 16px; /* Размер шрифта для описания */
     margin-bottom: 15px;
 }
-
+/* Цена */
+.price {
+    font-size: 1.5em;
+    color: #000;
+}
 .category, .price {
     font-size: 16px; /* Размер шрифта для категории и цены */
     margin-bottom: 10px;
@@ -41,6 +45,15 @@
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.add-to-cart-none{
+    background-color: #6ac56d; /* Цвет кнопки */
+    color: white; /* Цвет текста */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: default;
 }
 
 .add-to-cart:hover {
