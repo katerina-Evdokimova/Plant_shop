@@ -64,11 +64,6 @@ def load_more_products():
 @app.route('/checkout', methods=['GET', 'POST'])
 @login_required
 def checkout():
-    # if 'user_id' not in session:
-    #     # Если пользователь не авторизован, перенаправляем на страницу авторизации
-    #     flash('Вы должны быть авторизованы, чтобы оформить заказ.')
-    #     return redirect(url_for('login'))  # Здесь 'login' — это маршрут для авторизации
-    
     # Если пользователь авторизован, показываем страницу оформления заказа
     if request.method == 'POST':
         # Обработка заказа
@@ -102,9 +97,10 @@ def register():
         
         db_sess.add(user)
         db_sess.commit()
-        
+        next_page = request.args.get('next')
+
         flash('Регистрация прошла успешно!', 'success')
-        return redirect(url_for('login'))
+        return redirect(next_page or url_for('login'))
     
     return render_template('register.html', form=form)
 
@@ -114,11 +110,11 @@ def login():
     if form.validate_on_submit():
         db_sess = db_session.create_session()  # Создание сессии для работы с БД
         user = db_sess.query(User).filter(User.login == form.login.data).first()
-
+        next_page = request.args.get('next')
         # Проверка, существует ли пользователь и совпадает ли пароль
         if user and check_password_hash(user.password, form.password.data):
             login_user(user)  # Авторизация пользователя
-            return redirect(url_for('checkout'))  # Перенаправление на страницу оформления заказа
+            return redirect(next_page or url_for(''))  # Перенаправление на страницу оформления заказа
         else:
             flash('Неверный логин или пароль', 'danger')
     

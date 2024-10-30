@@ -15,9 +15,9 @@
             <a href="/trash" class="nav-link"><img src="{{ url_for('static', filename='images/store.png') }}" alt="Иконка корзины" class="icon-cart" /></a>  <!-- Иконка корзины -->
             <span class="cart-count">{{ count }}</span> <!-- Счетчик товаров -->
             <!-- Иконка аккаунта с выпадающим списком -->
-            <button id="account-button" class="nav-link">
+            <a id="account-button" class="nav-link">
                 <img src="{{ url_for('static', filename='images/user-account-bubble.png') }}" alt="Иконка аккаунта" class="icon-account" />
-            </button>
+            </a>
             <!-- Выпадающее меню -->
             <div id="dropdown-menu" class="dropdown-menu">
                 {% if current_user.is_authenticated %}
@@ -25,7 +25,7 @@
                     <a href="/orders" class="dropdown-item">Заказы</a>
                     <a href="/logout" class="dropdown-item">Выйти</a>
                 {% else %}
-                    <a href="/login" class="dropdown-item">Войти</a>
+                    <a href="{{ url_for('login', next=request.url) }}" class="dropdown-item">Войти</a>
                 {% endif %}
             </div>
         </div>
