@@ -18,7 +18,28 @@ window.addEventListener('popstate', function(event) {
     }
 });
 
+
 document.addEventListener('DOMContentLoaded', function () {
+// Показать или скрыть выпадающее меню
+        document.getElementById('account-button').addEventListener('click', function() {
+            var dropdown = document.getElementById('dropdown-menu');
+            console.log("+++", dropdown)
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            console.log("ff+")
+        });
+
+        document.addEventListener('click', function(event) {
+            // Проверяем, был ли клик на элементе внутри контейнера
+            const iconContainer = document.querySelector('.icon-container');
+            if (!iconContainer.contains(event.target)) {
+                console.log('Клик произошел вне объекта.');
+                var dropdown = document.getElementById('dropdown-menu');
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                console.log("ff+")
+            }
+        });
+        
+    
     // Добавление товара в корзину
     document.querySelectorAll('.add-to-cart').forEach(function (button) {
         button.addEventListener('click', function () {
@@ -206,22 +227,22 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-// Показать или скрыть выпадающее меню
-document.getElementById('filter-button').addEventListener('click', function() {
-    var dropdown = document.getElementById('filter-dropdown');
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-});
+    // Показать или скрыть выпадающее меню
+    document.getElementById('filter-button').addEventListener('click', function() {
+        var dropdown = document.getElementById('filter-dropdown');
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    });
 
-// Закрытие меню при клике вне фильтра
-window.onclick = function(event) {
-    if (!event.target.matches('.filter-button')) {
-        var dropdowns = document.getElementsByClassName("filter-dropdown");
-        for (var i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
-            if (openDropdown.style.display === "block") {
-                openDropdown.style.display = "none";
+    // Закрытие меню при клике вне фильтра
+    window.onclick = function(event) {
+        if (!event.target.matches('.filter-button')) {
+            var dropdowns = document.getElementsByClassName("filter-dropdown");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.style.display === "block") {
+                    openDropdown.style.display = "none";
+                }
             }
         }
-    }
-};
+    };
 });

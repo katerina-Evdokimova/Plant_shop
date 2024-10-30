@@ -1,0 +1,33 @@
+<form method="POST" action="/checkout">
+    <h2>Оформление заказа</h2>
+    
+    <!-- Информация о доставке -->
+    <div>
+        <label for="name">Имя:</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+
+    <div>
+        <label for="address">Адрес доставки:</label>
+        <input type="text" id="address" name="address" required>
+    </div>
+
+    <div>
+        <label for="phone">Телефон:</label>
+        <input type="text" id="phone" name="phone" required>
+    </div>
+
+    <!-- Выбор метода оплаты -->
+    <div>
+        <label for="payment_method">Метод оплаты:</label>
+        <select id="payment_method" name="payment_method" required>
+            <option value="card">Банковская карта</option>
+            <option value="cash">Наличные</option>
+        </select>
+    </div>
+
+    <!-- Кнопка отправки -->
+    <div>
+        <button type="submit">Оформить заказ</button>
+    </div>
+</form>

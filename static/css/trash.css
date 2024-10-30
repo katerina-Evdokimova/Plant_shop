@@ -111,3 +111,31 @@
     font-size: 0.9em; /* Чуть меньший шрифт */
     margin-right: 10px;
 }
+
+.catalog-button-container {
+    /* align-content: center; */
+    text-align: center; /* Центрируем кнопку */
+    margin-top: 5; /* Отступ сверху */
+    position: relative;
+    left: 0%;
+}
+.load-more-button-container {
+    /* align-content: center; */
+    text-align: center; /* Центрируем кнопку */
+    margin-top: 5%; /* Отступ сверху */
+    position: relative;
+    left: 0%;
+}
+
+.catalog-button {
+    display: inline-block; /* Чтобы кнопка располагалась как блок */
+    padding: 10px 20px; /* Отступы внутри кнопки */
+    background-color: rgba(68, 41, 56, 1); /* Цвет фона кнопки */
+    color: white; /* Цвет текста */
+    text-decoration: none; /* Убираем подчеркивание */
+    font-size: 16px; /* Размер шрифта */
+}
+
+.catalog-button:hover {
+    background-color: rgb(58, 35, 48); /* Цвет фона при наведении */
+}

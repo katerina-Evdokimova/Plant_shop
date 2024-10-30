@@ -28,3 +28,4 @@ window.addEventListener('load', function () {
     })
     .catch(error => console.error('Error:', error));
 });
+

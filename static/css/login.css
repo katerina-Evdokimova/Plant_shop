@@ -1,0 +1,81 @@
+/* Контейнер для формы авторизации */
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Полная высота экрана */
+    /* background-color: #f8f9fa; Нежный фон */
+}
+
+/* Заголовок формы */
+.auth-title {
+    font-family: 'Microsoft Sans Serif', sans-serif;
+    font-size: 36px;
+    color: rgba(0, 0, 0, 1);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Стили для самой формы */
+.auth-form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; /* Максимальная ширина формы */
+}
+
+/* Стили для полей формы */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Стили для кнопки отправки */
+.btn.btn-primary {
+    background-color: rgba(68, 41, 56, 1);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+}
+
+.btn.btn-primary:hover {
+    background-color: rgb(54, 33, 44);
+}
+
+/* Ссылка для регистрации */
+.register-link {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.register-link a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/* Ошибки валидации */
+.alert.alert-danger {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}

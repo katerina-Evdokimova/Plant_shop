@@ -4,6 +4,11 @@ from app import app
 from sessions import get_count_plants
 from query_bd import get_plant_by_id, get_plants
 from routes_main_page import *
+from data.users import User
+from wtf_flask.login_form import LoginForm
+from wtf_flask.register_form import RegistrationForm
+from login_manager import *
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 @app.route('/reload', methods=['POST'])
@@ -15,7 +20,7 @@ def reload():
 def trash():
     db_sess = db_session.create_session()
     plants = [get_plant_by_id(db_sess, idx) for idx in session['cart'].keys()] if 'cart' in session else []
-    return render_template('trash.html', plants=plants, session=session)
+    return render_template('trash.html', plants=plants, session=session, current_user=current_user)
 
 @app.route('/catalog')
 def catalog():
@@ -28,7 +33,7 @@ def catalog():
     plants = get_plants(db_sess, sort_order)
     db_sess = db_session.create_session()
     plants = get_plants(db_sess)
-    return render_template('catalog.html', products=plants, session=session, n=12)
+    return render_template('catalog.html',current_user=current_user, products=plants, session=session, n=12)
 
 
 @app.route('/catalog/sort', methods=['POST'])
@@ -55,19 +60,78 @@ def load_more_products():
         'cart_section.html', products=plants, session=session, n=n), 
         "has_more": len(plants) <= 12})
 
+
+@app.route('/checkout', methods=['GET', 'POST'])
+@login_required
+def checkout():
+    # if 'user_id' not in session:
+    #     # Если пользователь не авторизован, перенаправляем на страницу авторизации
+    #     flash('Вы должны быть авторизованы, чтобы оформить заказ.')
+    #     return redirect(url_for('login'))  # Здесь 'login' — это маршрут для авторизации
+    
+    # Если пользователь авторизован, показываем страницу оформления заказа
+    if request.method == 'POST':
+        # Обработка заказа
+        # Логика по созданию заказа и записи в БД
+        return redirect(url_for('order_confirmation'))
+    
+    return render_template('checkout.html')  # Отображение формы для оформления заказа
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'POST':
-        # Логика регистрации
-        pass
-    return render_template('register.html')
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        # Создаем нового пользователя с зашифрованным паролем
+        hashed_password = generate_password_hash(form.password.data)
+        
+        # Открываем сессию для записи данных в БД
+        db_sess = db_session.create_session()
+        
+        # Создаем нового пользователя
+        user = User(
+            login=form.login.data,
+            email=form.email.data,
+            phone=form.phone.data,
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+            middle_name=form.middle_name.data,
+            birth_date=form.birth_date.data,
+            gender=form.gender.data,
+            password=hashed_password
+        )
+        
+        db_sess.add(user)
+        db_sess.commit()
+        
+        flash('Регистрация прошла успешно!', 'success')
+        return redirect(url_for('login'))
+    
+    return render_template('register.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        # Логика авторизации
+    form = LoginForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()  # Создание сессии для работы с БД
+        user = db_sess.query(User).filter(User.login == form.login.data).first()
+
+        # Проверка, существует ли пользователь и совпадает ли пароль
+        if user and check_password_hash(user.password, form.password.data):
+            login_user(user)  # Авторизация пользователя
+            return redirect(url_for('checkout'))  # Перенаправление на страницу оформления заказа
+        else:
+            flash('Неверный логин или пароль', 'danger')
+    
+    return render_template('login.html', form=form)
+
+@app.route('/account')
+def account():
+    if current_user.is_authenticated:
+        # Логика для авторизованных пользователей
         pass
-    return render_template('login.html')
+    else:
+        return redirect(url_for('login'))
+    
 
 @app.route('/cart')
 def cart():

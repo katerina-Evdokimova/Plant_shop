@@ -1,0 +1,65 @@
+/* Контейнер для формы авторизации и регистрации */
+.auth-container {
+    max-width: 500px; /* Ограничение ширины */
+    margin: 0 auto; /* Центрирование по горизонтали */
+    padding: 20px;
+    background-color: #f9f9f9; /* Светлый фон для формы */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Тень для объема */
+}
+
+/* Заголовок формы */
+.auth-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+/* Стили для полей ввода */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Поля формы */
+.form-control {
+    width: 100%; /* Полная ширина */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    border-color: rgba(44, 90, 26, 0.291);
+}
+
+/* Кнопка */
+.btn-primary {
+    width: 100%; /* Полная ширина кнопки */
+    padding: 10px;
+    background-color: rgba(68, 41, 56, 1);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: rgb(48, 29, 40);
+}
+
+/* Сообщения об ошибках */
+.alert {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .auth-container {
+        max-width: 100%; /* Полная ширина на мобильных устройствах */
+        padding: 15px;
+    }
+}
