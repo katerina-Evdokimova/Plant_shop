@@ -9,6 +9,7 @@ class OrderItem(SqlAlchemyBase):
     order_id = sa.Column(sa.Integer, sa.ForeignKey('orders.id'))
     plant_id = sa.Column(sa.Integer, sa.ForeignKey('plants.id'))
     quantity = sa.Column(sa.Integer)
+    price = sa.Column(sa.Float)
     
     order = orm.relationship('Order', back_populates='items')
     plant = orm.relationship('Plant')

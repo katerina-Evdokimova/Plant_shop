@@ -1,33 +1,110 @@
-<form method="POST" action="/checkout">
-    <h2>Оформление заказа</h2>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLANT | Оформление заказа</title>
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/headers.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/footers.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/checkout.css') }}" rel="stylesheet" />
     
-    <!-- Информация о доставке -->
-    <div>
-        <label for="name">Имя:</label>
-        <input type="text" id="name" name="name" required>
+</head>
+<body>
+    <div class="aaa">
+        <div class="section">{% include 'header.html' %}</div>
+        <div class="section">
+            <div class="checkout-container">
+                <!-- Форма оформления заказа -->
+                <form method="POST" action="/checkout" class="checkout-form">
+                    <h2>Оформление заказа</h2>
+
+                    <!-- Имя пользователя (заполняется автоматически) -->
+                    <div>
+                        <label for="name">Имя:</label>
+                        <input type="text" id="name" name="name" value="{{ current_user.first_name }}" required>
+                    </div>
+
+                    <!-- Адрес доставки -->
+                    <div>
+                        <label for="address">Адрес доставки:</label>
+                        <select id="address" name="address" class="address-dropdown" required>
+                            {% for address in user_addresses %}
+                            <option value="{{ address }}">{{ address }}</option>
+                            {% endfor %}
+                            <option value="new">Выбрать адрес</option>
+                        </select>
+                        <input type="text" id="new-address" name="new_address" placeholder="Введите новый адрес" class="new-address">
+                    </div>
+                    <!-- Телефон (заполняется автоматически) -->
+                    <div>
+                        <label for="phone">Телефон:</label>
+                        <input type="text" id="phone" name="phone" value="{{ current_user.phone }}" required>
+                    </div>
+
+                    <!-- Метод оплаты -->
+                    <div>
+                        <label for="payment_method">Метод оплаты:</label>
+                        <select id="payment_method" name="payment_method" required>
+                            <option value="card">Банковская карта</option>
+                            <option value="cash">Наличные</option>
+                        </select>
+                    </div>
+                    <div class="section"><button type="submit">Оформить заказ</button></div>
+                </form>
+                    
+            </div>
+                <!-- Краткая сводка о заказе -->
+            <div class="checkout-summary">
+                    <h3>Ваш заказ</h3>
+                    <div class="summary-item">
+                        {% for plant in plants %}
+                            <div class="product-row">
+                                <span class="product-name">{{ plant.name }}</span>
+                                <span class="product-name">{{ session['cart'][plant.id|string] }} x {{ plant.price }} ₽</span>
+                                <span class="product-price">{{ session['cart'][plant.id|string] * plant.price }} ₽</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <hr class="divider">
+                    
+                    <div class="product-row">
+                        <span class="product-name">Общая сумма:</span>
+                        <span class="product-price">{{ all_sum }} ₽</span>
+                    </div>
+                    
+                    <hr class="divider">
+                    
+                    <div class="product-row">
+                        <span>Сумма скидки:</span>
+                        <span class="summary-total-sale">{{ all_sum - total_sum }} ₽</span>
+                    </div>
+                    
+                    <hr class="divider">
+                    
+                    <div class="product-row">
+                        <span>Итого:</span>
+                        <span class="summary-total">{{ total_sum }} ₽</span>
+                    </div>
+            </div>
+        </div>
+        
     </div>
 
-    <div>
-        <label for="address">Адрес доставки:</label>
-        <input type="text" id="address" name="address" required>
-    </div>
-
-    <div>
-        <label for="phone">Телефон:</label>
-        <input type="text" id="phone" name="phone" required>
-    </div>
-
-    <!-- Выбор метода оплаты -->
-    <div>
-        <label for="payment_method">Метод оплаты:</label>
-        <select id="payment_method" name="payment_method" required>
-            <option value="card">Банковская карта</option>
-            <option value="cash">Наличные</option>
-        </select>
-    </div>
-
-    <!-- Кнопка отправки -->
-    <div>
-        <button type="submit">Оформить заказ</button>
-    </div>
-</form>
+    {% include 'footer.html' %}
+    
+    <script>
+        // Показ поля для нового адреса, если выбран пункт "Добавить новый адрес"
+        document.querySelector('.address-dropdown').addEventListener('change', function() {
+            console.log('+++');
+            var newAddressField = document.querySelector('.new-address');
+            if (this.value === 'new') {
+                newAddressField.style.display = 'block';
+            } else {
+                newAddressField.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

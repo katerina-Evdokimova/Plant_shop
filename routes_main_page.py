@@ -6,6 +6,7 @@ from query_bd import get_plant_by_id, get_popular_plants
 from login_manager import *
 
 @app.route('/')
+@app.route('/index')
 def home():
     # session['cart'] = {} #### TODO
     db_sess = db_session.create_session()

@@ -1,0 +1,106 @@
+/* Информация о заказе */
+.order-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.order-number {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+}
+
+.status-circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.status.processing .status-circle {
+    background-color: orange;
+}
+
+.status.approved .status-circle {
+    background-color: green;
+}
+
+.status.rejected .status-circle {
+    background-color: red;
+}
+
+/* Таблица заказа */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 15px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+td {
+    border-bottom: 1px solid #ddd;
+}
+
+tfoot td {
+    font-weight: bold;
+}
+
+tfoot tr {
+    background-color: #f9f9f9;
+}
+
+td img {
+    max-width: 100px;
+    border-radius: 5px;
+}
+
+td:last-child {
+    text-align: right;
+}
+
+.status td
+{
+    text-align: center;
+}
+
+/* Адрес и доставка */
+.footer-info {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.footer-info p {
+    margin: 5px 0;
+    color: #333;
+}

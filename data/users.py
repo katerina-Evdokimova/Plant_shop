@@ -19,8 +19,7 @@ class User(SqlAlchemyBase, UserMixin):
     user_type = sa.Column(sa.Enum('admin', 'user', 'seller', ' supplier'), nullable=False, default='user')
     registration_date = sa.Column(sa.TIMESTAMP, default=sa.func.current_timestamp())
 
-    admins = orm.relationship("Admin", back_populates='user')
+    admins = orm.relationship("Admin", back_populates='user', uselist=False)
     supplier = orm.relationship("Supplier", back_populates='user')
     seller = orm.relationship("Seller", back_populates='user')
-    order = orm.relationship("Order", back_populates='user')
     client = orm.relationship("Client", back_populates='user')

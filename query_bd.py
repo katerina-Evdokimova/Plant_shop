@@ -2,6 +2,9 @@ from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import case, asc, desc
 from sqlalchemy.exc import NoResultFound
 from data.plant import Plant
+from data.client import Client
+from data.admin import Admin
+from data.address import Address
 from sqlalchemy import func
 from data.order_items import OrderItem 
 
@@ -65,3 +68,36 @@ def get_popular_plants(session: Session):
     finally:
         # Закрываем сессию
         session.close()
+
+def get_client_by_id(session: Session, user_id: int):
+    try:
+        product = session.query(Client).filter(Client.user_id == user_id).first()
+        return product
+    except NoResultFound:
+        return None
+    
+def get_address_by_id(session: Session, client_id: int):
+    try:
+        product = session.query(Address).filter(Address.client_id == client_id).all()
+        return product
+    except NoResultFound:
+        return None
+
+
+def delails_order_by_order_id(session: Session, order_id: int):
+    order_item = session.query(OrderItem).filter(OrderItem.order_id == order_id).all()
+    items = [
+        {
+            'id': item.id,
+            'plant': get_plant_by_id(session, item.plant_id),
+            'quantity': item.quantity,
+            'price': item.price
+        }
+        for item in order_item
+    ]
+    return items
+
+
+def is_admin(session: Session, user_id: int):
+    admin = session.query(Admin).filter(Admin.user_id == user_id).first()
+    return not (admin is None)

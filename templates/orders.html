@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои Заказы</title>
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/footers.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/headers.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/order_details.css') }}" rel="stylesheet" />
+</head>
+<body>
+    <div class="aaa">
+        <div class="section">{% include 'header.html' %}</div>
+        <div class="section">
+        <h1>Ваши Заказы</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Номер заказа</th>
+                    <th>Сумма</th>
+                    <th>Статус</th>
+                    <th>Детали</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ total_amount[order.id] }} ₽</td>
+                    <td class="status">
+                        <div class="status 
+                            {% if order.status == 'обработка' %}processing{% elif order.status == 'одобрен' %}approved{% else %}rejected{% endif %}">
+                            <span class="status-circle"></span>
+                            <span>
+                                {% if order.status == 'обработка' %}
+                                    Обработка
+                                {% elif order.status == 'одобрен' %}
+                                    Одобрен
+                                {% else %}
+                                    Отклонён
+                                {% endif %}
+                            </span>
+                    </td>
+                    <td><a href="{{ url_for('order_confirmation', order_id=order.id) }}">Посмотреть</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+        
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>

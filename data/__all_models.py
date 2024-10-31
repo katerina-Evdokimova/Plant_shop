@@ -7,3 +7,4 @@ from . import seller
 from . import supplier 
 from . import users 
 from . import order_items
+from . import address

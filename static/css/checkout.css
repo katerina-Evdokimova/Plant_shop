@@ -1,0 +1,101 @@
+/* Стили для формы оформления заказа */
+.checkout-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 50px auto;
+    max-width: 1200px;
+}
+
+.checkout-form {
+    flex: 1;
+    padding: 20px;
+    /* background-color: #f7f7f7; */
+    border: 1px solid rgba(44, 90, 26, 0.839);
+    margin-right: 20px;
+}
+
+.checkout-summary {
+    flex: 0.4;
+    padding: 20px;
+    border: 1px solid rgb(44, 90, 26);
+    background-color: #f1f1f1;
+}
+
+h2 {
+    text-align: center;
+    color: rgba(44, 90, 26, 1);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: rgba(44, 90, 26, 1);
+    font-weight: bold;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(44, 90, 26, 0.879);
+    background-color: rgba(240, 255, 240, 1);
+    color: rgb(44, 90, 26);
+    box-sizing: border-box;
+}
+
+button {
+    background-color: rgba(68, 41, 56, 1);
+    color: #fff;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+button:hover {
+    background-color: rgba(68, 41, 56, 0.8);
+}
+.summary-item {
+    margin-bottom: 10px;
+}
+
+.product-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.product-name {
+    flex-grow: 1;
+    text-align: left; /* Выравниваем название слева */
+}
+
+.product-price {
+    text-align: right; /* Выравниваем цену справа */
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+.summary-total span{
+    text-align: right;
+
+}
+
+.summary-total-sale {
+    text-align: right;
+    color: rgba(210, 58, 1, 1);
+    font-size: 20px;
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background: #ccc; /* Цвет линии */
+    margin: 10px 0; /* Отступы сверху и снизу линии */
+}

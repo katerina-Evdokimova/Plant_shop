@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали Заказа #{{ order.id }}</title>
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/footers.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/headers.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/order_details.css') }}" rel="stylesheet" />
+   
+</head>
+<body>
+    <div class="aaa">
+        <div class="section">{% include 'header.html' %}</div>
+        <div class="section"><h1>Детали Заказа</h1>
+
+            <!-- Блок информации о заказе -->
+            <div class="order-info">
+                <div class="order-number">
+                    Номер заказа: #{{ order.id }}
+                </div>
+                <div class="status 
+                     {% if order.status == 'обработка' %}processing{% elif order.status == 'одобрен' %}approved{% else %}rejected{% endif %}">
+                    <span class="status-circle"></span>
+                    <span>
+                        {% if order.status == 'обработка' %}
+                            Обработка
+                        {% elif order.status == 'одобрен' %}
+                            Одобрен
+                        {% else %}
+                            Отклонён
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        
+            <!-- Таблица товаров в заказе -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Картинка</th>
+                        <th>Название</th>
+                        <th>Количество</th>
+                        <th>Итоговая цена</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
+                    {% for item in order_items %}
+                    <tr>
+                        <td><img src="{{ url_for('static', filename=item.plant.picture) }}" alt="{{ item.plant.name }}" style="width:100px;"/></td>
+                        <td>{{ item['plant'].name }}</td>
+                        <td>{{ item['quantity'] }}</td>
+                        <td>{{ item['price'] * item['quantity'] }} ₽</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3">Итого:</td>
+                        <td>{{ total_amount }} ₽</td>
+                    </tr>
+                </tfoot>
+            </table>
+        
+            <!-- Адрес и способ доставки -->
+            <div class="footer-info">
+                <p><strong>Адрес доставки:</strong> {{ order.address }}</p>
+                <p><strong>Способ оплаты:</strong> {{ order.payment_method }}</p>
+            </div>
+        </div>
+        <!-- <div class="section"></div> -->
+    </div>
+    {% include 'footer.html' %}
+    
+</body>
+</html>
