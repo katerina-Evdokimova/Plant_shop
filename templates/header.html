@@ -3,17 +3,28 @@
     <div class="header-style">
         <a href="/" class="nav-link"><span class="logo">plant</span></a>
         <div class="list-text">
-            <div class="v9_8">
-                <a href="/catalog" class="nav-link"><span class="text-light">Каталог</span></a>
-                <a href="/care-tips" class="nav-link"><span class="text-light">Советы по уходу</span></a>
-                <a href="/payment-delivery" class="nav-link"><span class="text-light">Оплата и доставка</span></a>
-                <a href="/contacts" class="nav-link"><span class="text-light">Контакты</span></a>
-            </div> 
+            {% if admin %}
+                <div class="v9_8">
+                    <a href="/admin/users" class="nav-link"><span class="text-light">Пользователи</span></a>
+                    <a href="/admin/orders" class="nav-link"><span class="text-light">Заказы</span></a>
+                    <a href="/admin/plants" class="nav-link"><span class="text-light">Товары</span></a>
+                </div> 
+            {% else %}
+                <div class="v9_8">
+                    <a href="/catalog" class="nav-link"><span class="text-light">Каталог</span></a>
+                    <a href="/care-tips" class="nav-link"><span class="text-light">Советы по уходу</span></a>
+                    <a href="/payment-delivery" class="nav-link"><span class="text-light">Оплата и доставка</span></a>
+                    <a href="/contacts" class="nav-link"><span class="text-light">Контакты</span></a>
+                </div> 
+            {% endif %}
         </div>
         <div class="icon-container">
-            <a href="/search" class="nav-link"><img src="{{ url_for('static', filename='images/search.png') }}" alt="Иконка поиска" class="icon-search" /></a> <!-- Иконка поиска -->
+            <!-- <a href="/search" class="nav-link"><img src="{{ url_for('static', filename='images/search.png') }}" alt="Иконка поиска" class="icon-search" /></a> Иконка поиска -->
+            {% if not admin %}
             <a href="/trash" class="nav-link"><img src="{{ url_for('static', filename='images/store.png') }}" alt="Иконка корзины" class="icon-cart" /></a>  <!-- Иконка корзины -->
             <span class="cart-count">{{ count }}</span> <!-- Счетчик товаров -->
+            
+            {% endif %}
             <!-- Иконка аккаунта с выпадающим списком -->
             <a id="account-button" class="nav-link">
                 <img src="{{ url_for('static', filename='images/user-account-bubble.png') }}" alt="Иконка аккаунта" class="icon-account" />
@@ -22,7 +33,9 @@
             <div id="dropdown-menu" class="dropdown-menu">
                 {% if current_user.is_authenticated %}
                     <a href="/account" class="dropdown-item">Аккаунт</a>
+                    {% if not admin %}
                     <a href="/orders" class="dropdown-item">Заказы</a>
+                    {% endif %}
                     <a href="/logout" class="dropdown-item">Выйти</a>
                 {% else %}
                     <a href="{{ url_for('login', next=request.url) }}" class="dropdown-item">Войти</a>

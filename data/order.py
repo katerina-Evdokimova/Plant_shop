@@ -10,6 +10,7 @@ class Order(SqlAlchemyBase):
     status = sa.Column(sa.String(100), default="обработка")
     payment_method = sa.Column(sa.String(100))
     address = sa.Column(sa.String(100))
+    date = sa.Column(sa.TIMESTAMP, default=sa.func.current_timestamp())
     
     client = orm.relationship('Client')
     items = orm.relationship('OrderItem', back_populates='order')

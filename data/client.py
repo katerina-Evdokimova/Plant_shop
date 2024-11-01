@@ -1,9 +1,10 @@
 import sqlalchemy as sa
 from sqlalchemy import orm
 from .db_session import SqlAlchemyBase
+from flask_login import UserMixin
 
 
-class Client(SqlAlchemyBase):
+class Client(SqlAlchemyBase, UserMixin):
     __tablename__ = 'clients'
     
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)

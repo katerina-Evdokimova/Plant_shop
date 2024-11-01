@@ -15,6 +15,7 @@ from data.order import Order
 from wtf_flask.login_form import LoginForm
 from wtf_flask.register_form import RegistrationForm
 from login_manager import *
+from routes_admin import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import abort
 
@@ -27,7 +28,7 @@ def reload():
 def trash():
     db_sess = db_session.create_session()
     plants = [get_plant_by_id(db_sess, idx) for idx in session['cart'].keys()] if 'cart' in session else []
-    return render_template('trash.html', plants=plants, session=session, current_user=current_user)
+    return render_template('trash.html', plants=plants, session=session, current_user=current_user, admin=False)
 
 @app.route('/catalog')
 def catalog():
@@ -158,7 +159,7 @@ def checkout():
     plants = [get_plant_by_id(db_sess, idx) for idx in session['cart'].keys()] if 'cart' in session else []
     total_sum = sum([session['cart'][str(plant.id)] * plant.price * (1 - plant.sale / 100) for plant in plants])
     all_aum = sum([session['cart'][str(plant.id)] * plant.price for plant in plants])
-    return render_template('checkout.html', current_user=current_user, user_addresses=adress, plants=plants, total_sum=total_sum, all_sum=all_aum)  # Отображение формы для оформления заказа
+    return render_template('checkout.html', current_user=current_user, user_addresses=adress, plants=plants, total_sum=total_sum, all_sum=all_aum, admin=False)  # Отображение формы для оформления заказа
 
 
 
@@ -206,7 +207,7 @@ def order_confirmation():
     order_item = delails_order_by_order_id(db_sess, order.id)
     print(order_item)
     total_amount = sum(item['price'] for item in order_item)
-    return render_template('order_details.html', order=order, order_items=order_item, total_amount=total_amount)
+    return render_template('order_details.html', order=order, order_items=order_item, total_amount=total_amount, admin=False)
 
 
 @app.route('/orders')
@@ -220,7 +221,7 @@ def my_orders():
         order_item = delails_order_by_order_id(db_sess, order.id)
         total_amount[order.id] =  sum(item['price'] for item in order_item)
         
-    return render_template('orders.html', orders=orders, total_amount=total_amount)
+    return render_template('orders.html', orders=orders, total_amount=total_amount, admin=False)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -253,13 +254,6 @@ def cart():
     # Логика корзины
     pass
 
-@app.route('/admin')
-@login_required
-def admin_dashboard():
-    db_sess = db_session.create_session()
-    if not is_admin(db_sess, current_user.id):  # Проверка наличия объекта Admin у пользователя
-        abort(403)  # Ошибка доступа "403 Forbidden", если пользователь не администратор
-    return "Добро пожаловать на панель администратора!"
 
 @app.route('/seller')
 def seller_dashboard():

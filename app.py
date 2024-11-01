@@ -9,5 +9,5 @@ from login_manager import *
 db_session.global_init(app.config['SQLALCHEMY_DATABASE_URI'])
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  
     app.run()

@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, flash, session
 from flask import jsonify
 from app import app
 from data import db_session
-from query_bd import get_plant_by_id, get_popular_plants
+from query_bd import get_plant_by_id, get_popular_plants, is_admin
 from login_manager import *
 
 @app.route('/')
@@ -11,7 +11,7 @@ def home():
     # session['cart'] = {} #### TODO
     db_sess = db_session.create_session()
     products = get_popular_plants(db_sess)
-    return render_template('index.html', current_user=current_user, products=products, session=session, n=6)
+    return render_template('index.html', current_user=current_user, products=products, session=session, n=6, admin=False)
 
 
 @app.route('/add_to_cart', methods=['POST'])
@@ -80,4 +80,4 @@ def delete_from_cart():
 def created_cart_for_plant(plant_id):
     db_sess = db_session.create_session()
     plant = get_plant_by_id(db_sess, plant_id)  # Загрузка растенияы из БД
-    return render_template('card_plant.html', plant=plant, session=session, current_user=current_user)
+    return render_template('card_plant.html', plant=plant, session=session, current_user=current_user, admin=is_admin(db_sess, current_user.id))
