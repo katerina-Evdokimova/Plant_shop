@@ -14,6 +14,18 @@ header .header-style .logo {
   color: rgba(44, 90, 26, 1) !important;
 }
 
+.header-style .logo {
+  font-size: 50px !important;
+  font-family: 'Microsoft Sans Serif', sans-serif !important;
+  color:rgba(44, 90, 26, 1) !important;
+}
+
+header .header-style .logo span{
+  font-size: 50px !important;
+  font-family: 'Microsoft Sans Serif', sans-serif !important;
+  color: rgba(44, 90, 26, 1) !important;
+}
+
 header .header-style .logo h1 {
   position: relative !important;
   left: 50% !important;
@@ -35,8 +47,20 @@ header .header-style .nav-link {
   text-decoration: none !important;
   white-space: nowrap !important;
 }
+.header-style .nav-link {
+  font-family: 'Tiro Bangla', sans-serif !important;
+  font-size: 18px !important;
+  color: rgba(0, 0, 0, 0.55) !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
 
 header .header-style .nav-link:hover {
+  cursor: pointer !important;
+  color: rgba(0, 0, 0, 0.85) !important;
+}
+
+.header-style .nav-link:hover {
   cursor: pointer !important;
   color: rgba(0, 0, 0, 0.85) !important;
 }
@@ -79,8 +103,8 @@ header .header-style .dropdown {
   display: inline-block !important;
 }
 
-header .header-style .dropdown-menu {
-  display: none !important;
+.dropdown-menu {
+  display: none;
   position: absolute !important;
   background-color: #f9f9f9 !important;
   min-width: 160px !important;

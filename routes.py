@@ -238,7 +238,7 @@ def login():
         else:
             flash('Неверный логин или пароль', 'danger')
     
-    return render_template('login.html', form=form)
+    return render_template('login.html', form=form, admin=False)
 
 @app.route('/account')
 def account():
@@ -259,3 +259,47 @@ def cart():
 def seller_dashboard():
     # Логика для продавца
     pass
+
+
+# ---------
+
+table_data = [
+        {"Название": "Фикус Бенджамина", "Категория": "Комнатные растения", "Цена": 1500, "Количество": 9, "href": "/details/1"},
+        {"Название": "Алоэ", "Категория": "Суккуленты", "Цена": 800, "Количество": 13, "href": "/details/2"},
+        # ... до 50 и более записей
+    ]
+
+# Настройки для пагинации
+PER_PAGE = 10
+
+@app.route('/api/total_pages')
+def get_total_pages():
+    total_pages = (len(table_data) + PER_PAGE - 1) // PER_PAGE
+    return jsonify({"total_pages": total_pages})
+
+@app.route('/api/table_data')
+def get_table_data():
+    page = int(request.args.get('page', 1))
+    start = (page - 1) * PER_PAGE
+    end = start + PER_PAGE
+    items = table_data[start:end]
+    return jsonify({"items": items})
+
+@app.route('/table')
+@login_required
+def table_view():
+    # Передаем данные для таблицы
+    title = ["Название", "Категория", "Цена", "Количество"]
+    
+    
+    # Параметры пагинации
+    page = int(request.args.get('page', 1))  # текущая страница
+    per_page = 10  # количество записей на странице
+    total_pages = (len(table_data) + per_page - 1) // per_page
+
+    # Обработка данных для отображения на текущей странице
+    start = (page - 1) * per_page
+    end = start + per_page
+    table_page = table_data[start:end]
+
+    return render_template('table.html', title=title, table=table_page, page=page, total_pages=total_pages, admin=True)

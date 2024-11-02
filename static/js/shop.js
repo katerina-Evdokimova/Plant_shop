@@ -20,7 +20,7 @@ window.addEventListener('popstate', function(event) {
 
 
 document.addEventListener('DOMContentLoaded', function () {
-// Показать или скрыть выпадающее меню
+        // Показать или скрыть выпадающее меню
         document.getElementById('account-button').addEventListener('click', function() {
             var dropdown = document.getElementById('dropdown-menu');
             console.log("+++", dropdown)

@@ -21,9 +21,8 @@
         <div class="icon-container">
             <!-- <a href="/search" class="nav-link"><img src="{{ url_for('static', filename='images/search.png') }}" alt="Иконка поиска" class="icon-search" /></a> Иконка поиска -->
             {% if not admin %}
-            <a href="/trash" class="nav-link"><img src="{{ url_for('static', filename='images/store.png') }}" alt="Иконка корзины" class="icon-cart" /></a>  <!-- Иконка корзины -->
-            <span class="cart-count">{{ count }}</span> <!-- Счетчик товаров -->
-            
+                <a href="/trash" class="nav-link"><img src="{{ url_for('static', filename='images/store.png') }}" alt="Иконка корзины" class="icon-cart" /></a>  <!-- Иконка корзины -->
+                <span class="cart-count">{{ count }}</span> <!-- Счетчик товаров -->
             {% endif %}
             <!-- Иконка аккаунта с выпадающим списком -->
             <a id="account-button" class="nav-link">
