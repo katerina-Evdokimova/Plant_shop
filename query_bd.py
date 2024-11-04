@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session, joinedload
-from sqlalchemy import case, asc, desc
+from sqlalchemy import case
 from sqlalchemy.exc import NoResultFound
 from data.plant import Plant
 from data.client import Client
@@ -7,6 +7,134 @@ from data.admin import Admin
 from data.address import Address
 from sqlalchemy import func
 from data.order_items import OrderItem 
+from data import db_session
+from data.supplier import Supplier
+from data.seller import Seller
+from data.order import Order
+from collections import Counter
+
+def add_role_to_user(user, role):
+    """
+    Добавляет роль пользователю, создавая запись в соответствующей таблице.
+    """
+    db_sess = db_session.create_session()
+    print('!!!', role)
+    if role == "Админ":
+        # Проверяем, есть ли уже такая роль у пользователя
+        if db_sess.query(Admin).filter_by(user_id=user.id).first():
+            return "Пользователь уже имеет роль Админа"
+        # Добавляем роль Админа
+        new_admin = Admin(user_id=user.id)
+        db_sess.add(new_admin)
+    
+    elif role == "Клиент":
+        if db_sess.query(Client).filter_by(user_id=user.id).first():
+            return "Пользователь уже имеет роль Клиента"
+        new_client = Client(user_id=user.id, phone=user.phone)
+        db_sess.add(new_client)
+    
+    elif role == "Поставщик":
+        if db_sess.query(Supplier).filter_by(user_id=user.id).first():
+            return "Пользователь уже имеет роль Поставщика"
+        new_supplier = Supplier(user_id=user.id, name=user.last_name, contact=user.phone)
+        db_sess.add(new_supplier)
+    
+    elif role == "Продавец":
+        if db_sess.query(Seller).filter_by(user_id=user.id).first():
+            return "Пользователь уже имеет роль Продавца"
+        new_seller = Seller(user_id=user.id, phone=user.phone)
+        db_sess.add(new_seller)
+    
+    else:
+        return "Роль не найдена"
+    
+    db_sess.commit()
+    return "Роль успешно добавлена"
+
+def remove_role_from_user(user, role):
+    """
+    Удаляет роль у пользователя, удаляя запись из соответствующей таблицы.
+    """
+    db_sess = db_session.create_session()
+
+    if role == "Admin":
+        role_entry = db_sess.query(Admin).filter_by(user_id=user.id).first()
+        if not role_entry:
+            return "Роль Админа у пользователя отсутствует"
+        db_sess.delete(role_entry)
+    
+    elif role == "Client":
+        role_entry = db_sess.query(Client).filter_by(user_id=user.id).first()
+        if not role_entry:
+            return "Роль Клиента у пользователя отсутствует"
+        db_sess.delete(role_entry)
+    
+    elif role == "Supplier":
+        role_entry = db_sess.query(Supplier).filter_by(user_id=user.id).first()
+        if not role_entry:
+            return "Роль Поставщика у пользователя отсутствует"
+        db_sess.delete(role_entry)
+    
+    elif role == "Seller":
+        role_entry = db_sess.query(Seller).filter_by(user_id=user.id).first()
+        if not role_entry:
+            return "Роль Продавца у пользователя отсутствует"
+        db_sess.delete(role_entry)
+    
+    else:
+        return "Роль не найдена"
+    
+    db_sess.commit()
+    return "Роль успешно удалена"
+
+def get_product_data():
+    db_sess = db_session.create_session()
+    total_products = db_sess.query(Plant).count()
+    out_of_stock = db_sess.query(Plant).filter(Plant.quantity == 0).count()
+    return {'total': total_products, 'out_of_stock': out_of_stock}
+
+def get_user_data():
+    db_sess = db_session.create_session()
+    suppliers = db_sess.query(Supplier).count()
+    sellers = db_sess.query(Seller).count()
+    clients = db_sess.query(Client).count()
+    return {'suppliers': suppliers, 'sellers': sellers, 'clients': clients}
+
+def get_recent_activity():
+    db_sess = db_session.create_session()
+    orders = db_sess.query(Order).order_by(Order.date.desc()).limit(5).all()
+    return [{'id': order.id, 'status': order.status, 'date': order.date} for order in orders]
+
+def get_order_statuses():
+    db_sess = db_session.create_session()
+    status_counts = Counter(order.status for order in db_sess.query(Order).all())
+    return {'processing': status_counts.get('обработка', 0),
+            'approved': status_counts.get('одобрен', 0),
+            'error': status_counts.get('отклонен', 0)}
+
+
+def get_top_products():
+    db_sess = db_session.create_session()
+    top_products = db_sess.query(
+            Plant, func.sum(OrderItem.quantity).label('total_sold')
+        ).join(OrderItem, Plant.id == OrderItem.plant_id) \
+         .options(joinedload(Plant.category)) \
+         .group_by(Plant.id) \
+         .order_by(func.sum(OrderItem.quantity).desc()) \
+         .limit(3).all()
+
+    # Приводим данные к удобному формату для JSON-вывода
+    return [
+        {
+            'id': product.id,
+            'name': product.name,
+            'image': product.picture, 
+            'category': product.category.name,  # если у Plant есть категория
+            'total_sold': total_sold
+        }
+        for product, total_sold in top_products
+    ]
+
 
 def get_plant_by_id(session: Session, product_id: int):
     """
