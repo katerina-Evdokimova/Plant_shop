@@ -8,7 +8,6 @@ from login_manager import *
 @app.route('/')
 @app.route('/index')
 def home():
-    # session['cart'] = {} #### TODO
     db_sess = db_session.create_session()
     products = get_popular_plants(db_sess)
     return render_template('index.html', current_user=current_user, products=products, session=session, n=6, admin=False)
@@ -58,7 +57,6 @@ def remove_from_cart():
 
 @app.route('/delete_from_cart', methods=['POST'])
 def delete_from_cart():
-    print('!!')
     product_id = request.json.get('plant_id')
     print(type(product_id))
     # Проверяем, что корзина существует

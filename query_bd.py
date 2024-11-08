@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Session, joinedload
-from sqlalchemy import case
+from sqlalchemy import case, asc, desc
 from sqlalchemy.exc import NoResultFound
 from data.plant import Plant
+from data.users import User
 from data.client import Client
 from data.admin import Admin
 from data.address import Address
@@ -112,7 +113,6 @@ def get_order_statuses():
             'approved': status_counts.get('одобрен', 0),
             'error': status_counts.get('отклонен', 0)}
 
-
 def get_top_products():
     db_sess = db_session.create_session()
     top_products = db_sess.query(
@@ -134,7 +134,6 @@ def get_top_products():
         }
         for product, total_sold in top_products
     ]
-
 
 def get_plant_by_id(session: Session, product_id: int):
     """
@@ -225,7 +224,64 @@ def delails_order_by_order_id(session: Session, order_id: int):
     ]
     return items
 
-
 def is_admin(session: Session, user_id: int):
     admin = session.query(Admin).filter(Admin.user_id == user_id).first()
     return not (admin is None)
+
+
+def get_sorted_data(table_name, sort_config):
+    # Извлекаем параметры сортировки из запроса
+    
+    
+    db_sess = db_session.create_session()
+
+    if table_name == 'users':
+        query = db_sess.query(User)
+    elif table_name == 'plants':
+        query = db_sess.query(Plant).join(Plant.category)
+    elif table_name == 'orders':
+        query = db_sess.query(Order)
+
+        
+    for column_index, direction in sort_config.items():
+        if column_index != 9:
+            
+            if direction == 'asc':
+                query = query.order_by(asc(get_column_by_index(column_index, table_name)))
+            elif direction == 'desc':
+                query = query.order_by(desc(get_column_by_index(column_index, table_name)))
+
+    return query.all()
+
+# Вспомогательная функция для получения колонки по индексу
+def get_column_by_index(column_index, table_name):
+    if table_name == 'users':
+        columns = {
+            0: User.id,
+            1: User.login,
+            2: User.email,
+            3: User.phone,
+            4: User.gender,
+            5: User.first_name,
+            6: User.last_name,
+            7: User.birth_date,
+            8: User.registration_date
+        }
+    elif table_name == 'plants':
+        columns = {
+            0: Plant.name,
+            1: Plant.category,
+            2: Plant.price,
+            3: Plant.quantity
+        }
+    elif table_name == 'orders':
+        columns = {
+            0: Order.id,
+            1: Order.client_id,
+            2: Order.status,
+            3: Order.payment_method,
+            4: Order.address,
+            5: Order.date
+        }
+    
+    return columns.get(column_index)

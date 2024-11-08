@@ -41,14 +41,38 @@ def get_total_pages():
 @app.route('/api/table_data')
 def get_table_data():
     name_table = request.args.get('name', '')
+    # Извлекаем параметры сортировки из запроса
+    sort_config = {}
+    for key, value in request.args.items():
+        if key.startswith('sort_'):
+            column_index = int(key.split('_')[1])
+            sort_config[column_index] = value
+
+
+    data = get_sorted_data(name_table, sort_config)
+    # print(data)
+
     db_sess = db_session.create_session()
     print(name_table)
-    title, table_data = get_table_data_by_type(db_sess, name_table)
+    title, table_data = get_table_data_by_type(db_sess, name_table, data)
+    
+    # Получаем список ролей для каждого пользователя
+    if name_table == 'users':
+        role_data = {user['id']: ', '.join(get_user_role(db_sess, user['id'])) for user in table_data}
+
+        # Применяем сортировку к данным
+        for column_index, direction in sort_config.items():
+            if column_index == 9:  # Индекс колонки с ролями
+                reverse = direction == 'desc'
+                # Сортируем по ролям, используя role_data для каждого user
+                table_data.sort(key=lambda x: role_data.get(x['id'], ''), reverse=reverse)
+
 
     page = int(request.args.get('page', 1))
     start = (page - 1) * PER_PAGE
     end = start + PER_PAGE
     items = table_data[start:end]
+    print(items)
     return jsonify({"items": items})
 
 
@@ -107,7 +131,7 @@ def top_products():
     return jsonify(get_top_products())
 
 
-def get_table_data_by_type(session, name_table: str):
+def get_table_data_by_type(session, name_table: str, data=None):
     # Заголовки столбцов для каждой таблицы
     titles = {
         'plants': ["Название", "Категория", "Цена", "Количество"],
@@ -117,11 +141,12 @@ def get_table_data_by_type(session, name_table: str):
     
     # Выбор модели в зависимости от имени таблицы
     if name_table == 'plants':
-        data = session.query(Plant).all()
+        if not data:
+            data = session.query(Plant).all()
         result = [
             {
                titles['plants'][0]: plant.name,
-               titles['plants'][1]:plant.category.name if plant.category else 'Нет категории',
+               titles['plants'][1]: plant.category.name if plant.category else 'Нет категории',
                titles['plants'][2]: plant.price,
                titles['plants'][3]: plant.quantity,
                "href": f"plants/{plant.id}"
@@ -130,7 +155,8 @@ def get_table_data_by_type(session, name_table: str):
         ]
     
     elif name_table == 'users':
-        data = session.query(User).all()
+        if not data:
+            data = session.query(User).all()
         result = [
             {
                 titles[name_table][0]: user.id,
@@ -149,7 +175,8 @@ def get_table_data_by_type(session, name_table: str):
         ]
     
     elif name_table == 'orders':
-        data = session.query(Order).all()
+        if not data:
+            data = session.query(Order).all()
         result = [
             {
                 titles[name_table][0]: order.id,

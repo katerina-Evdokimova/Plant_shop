@@ -48,3 +48,19 @@ th {
     display: block;
     cursor: pointer;
 }
+
+.sort-icon {
+    margin-left: 5px;
+    font-size: 12px;
+    visibility: hidden;  /* По умолчанию стрелка скрыта */
+}
+
+.sorted-asc .sort-icon {
+    visibility: visible;
+    content: '▲';  /* Стрелка вверх */
+}
+
+.sorted-desc .sort-icon {
+    visibility: visible;
+    content: '▼';  /* Стрелка вниз */
+}

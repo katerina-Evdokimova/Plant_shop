@@ -15,13 +15,15 @@
     <div class="aaa">
         <div class="section">{% include 'header.html' %}</div>
         <div class="section">
-            <h2>Таблица данных</h2>
 
             <table id="data-table" data-table-type="{{ name_table }}">
                 <thead>
                     <tr>
                         {% for col in title %}
-                            <th>{{ col }}</th>
+                            <th data-column="{{ loop.index0 }}" onclick="handleColumnSort('{{ loop.index0 }}')">
+                                {{ col }}
+                                <span class="sort-icon" id="sort-icon-{{ loop.index0 }}"></span>
+                            </th>
                         {% endfor %}
                         <th>Подробнее</th>
                     </tr>

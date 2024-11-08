@@ -13,7 +13,7 @@ function getTableHeaders() {
     const headers = [];
     const thElements = document.querySelectorAll("thead th");
     thElements.forEach((th) => {
-        headers.push(th.textContent.trim());
+        headers.push(th.textContent.trim().split("\n")[0]);
     });
     return headers;
 }
@@ -28,20 +28,30 @@ async function fetchTotalPages(tableType) {
 
 // Загружаем данные таблицы для текущей страницы и текущего типа таблицы
 // Загрузка данных таблицы
-async function loadTableData(page = 1, tableType = currentTableType) {
-    const response = await fetch(`/api/table_data?name=${tableType}&page=${page}`);
+async function loadTableData(page = 1, tableType = currentTableType, sortConfig = {}) {
+    console.log("loadData")
+    const params = new URLSearchParams();
+    params.append('name', document.getElementById('data-table').dataset.tableType);
+    params.append('page', page);
+
+    // Добавляем параметры сортировки в URL
+    Object.keys(sortConfig).forEach(columnIndex => {
+        params.append(`sort_${columnIndex}`, sortConfig[columnIndex]);
+    });
+    
+    const response = await fetch(`/api/table_data?${params.toString()}`);
     const data = await response.json();
     
     const tableBody = document.getElementById('table-body');
     tableBody.innerHTML = '';
 
     data.items.forEach(item => {
+        console.log(item)
         const row = document.createElement('tr');
 
         // Перебираем данные по заголовкам
         getTableHeaders().forEach(header => {
             const cell = document.createElement('td');
-
             if (header === "Роль") {
                 cell.classList.add("role-cell");
                 cell.innerHTML = generateRoleDropdown(item["Роль"], item["id"]);
@@ -55,12 +65,14 @@ async function loadTableData(page = 1, tableType = currentTableType) {
                 row.appendChild(linkCell);
             }
              else {
+                console.log(header == "Почта", header)
                 cell.textContent = item[header] || '';
             }
             row.appendChild(cell);
         });
 
         tableBody.appendChild(row);
+    
     });
 }
 
@@ -164,6 +176,42 @@ function changePage(direction) {
     } else if (direction === 'prev' && currentPage > 1) {
         goToPage(currentPage - 1);
     }
+}
+
+
+let sortConfig = {};  // Хранит текущую конфигурацию сортировки (колонка и направление)
+
+// Функция для обработки клика по заголовку столбца
+function handleColumnSort(columnIndex) {
+    // Если для этого столбца сортировка не задана или была сброшена, сортируем по возрастанию
+    if (!sortConfig[columnIndex]) {
+        sortConfig[columnIndex] = 'asc';
+    } else if (sortConfig[columnIndex] === 'asc') {
+        // Если уже отсортировано по возрастанию, меняем на убывание
+        sortConfig[columnIndex] = 'desc';
+    } else {
+        // Если уже отсортировано по убыванию, сбрасываем сортировку
+        delete sortConfig[columnIndex];
+    }
+
+    // Обновляем иконки сортировки
+    updateSortIcons();
+
+    loadTableData(currentPage, getTableType(), sortConfig);  // Передаем конфигурацию сортировки в загрузку данных
+}
+
+// Обновление иконок стрелок
+function updateSortIcons() {
+    document.querySelectorAll('.sort-icon').forEach(icon => {
+        icon.textContent = '';  // Сбрасываем все стрелки
+    });
+
+    Object.keys(sortConfig).forEach(columnIndex => {
+        const sortDirection = sortConfig[columnIndex];
+        const icon = document.getElementById(`sort-icon-${columnIndex}`);
+        icon.textContent = sortDirection === 'asc' ? '▲' : '▼';
+        icon.style.visibility = 'visible';
+    });
 }
 
 // Инициализация при загрузке страницы

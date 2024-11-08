@@ -200,7 +200,6 @@ def register():
 @app.route('/order_confirmation')
 @login_required
 def order_confirmation():
-    print('fff')
     order_id = request.args.get('order_id')
     # Получаем заказ текущего пользователя
     db_sess = db_session.create_session()
