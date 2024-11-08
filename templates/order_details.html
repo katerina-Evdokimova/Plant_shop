@@ -1,18 +1,5 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Детали Заказа #{{ order.id }}</title>
-    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/footers.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/headers.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/order_details.css') }}" rel="stylesheet" />
-   
-</head>
-<body>
-    <div class="aaa">
-        <div class="section">{% include 'header.html' %}</div>
+{% extends "base.html" %}
+{% block content %}
         <div class="section"><h1>Детали заказа</h1>
 
             <!-- Блок информации о заказе -->
@@ -71,8 +58,4 @@
             </div>
         </div>
         <!-- <div class="section"></div> -->
-    </div>
-    {% include 'footer.html' %}
-    
-</body>
-</html>
+{% endblock %}

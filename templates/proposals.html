@@ -1,14 +1,17 @@
-{% if product %}
-    <h2 class="proposals-title">Предложения месяца</h2> <!-- Заголовок секции -->
-{% endif %}
-<div class="proposals-section">
+<div class="section">
+    {% if product %}
+        <h2 class="proposals-title">Предложения месяца</h2> <!-- Заголовок секции -->
+    {% endif %}
+    <div class="proposals-section">
 
-    {% include 'cart_section.html' %}
+        {% include 'cart_section.html' %}
 
+        
+    </div>
+</div>
+<div class="section">
     <!-- Кнопка перейти в каталог -->
     <div class="catalog-button-container">
         <a href="/catalog" class="catalog-button">ПЕРЕЙТИ В КАТАЛОГ</a>
     </div>
 </div>
-
-<script src="{{ url_for('static', filename='js/shop.js') }}"></script>

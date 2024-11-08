@@ -1,18 +1,5 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PLANT | Оформление заказа</title>
-    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/headers.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/footers.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/checkout.css') }}" rel="stylesheet" />
-    
-</head>
-<body>
-    <div class="aaa">
-        <div class="section">{% include 'header.html' %}</div>
+{% extends "base.html" %}
+{% block content %}
         <div class="section">
             <div class="checkout-container">
                 <!-- Форма оформления заказа -->
@@ -89,11 +76,7 @@
                     </div>
             </div>
         </div>
-        
-    </div>
-
-    {% include 'footer.html' %}
-    
+   
     <script>
         // Показ поля для нового адреса, если выбран пункт "Добавить новый адрес"
         document.querySelector('.address-dropdown').addEventListener('change', function() {
@@ -106,5 +89,4 @@
             }
         });
     </script>
-</body>
-</html>
+{% endblock %}

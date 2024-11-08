@@ -1,0 +1,29 @@
+.container {
+    display: flex; /* Добавлено для flex-контейнера */
+    flex-direction: column; /* Вертикальная ориентация */
+    justify-content: center; /* Центрирование по вертикали */
+    align-items: center; /* Центрирование по горизонтали */
+    
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.sad-plant {
+    width: 50%; /* Ширина изображения 50% контейнера */
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 24px;
+    color: #333;
+    margin: 10px 0;
+}
+
+p {
+    font-size: 16px;
+    color: #666;
+}

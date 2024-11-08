@@ -1,73 +1,56 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Магазин PLANT | {{ plant.name }}</title>
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"> -->
-    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/headers.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/card_plant.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/footers.css') }}" rel="stylesheet" />
-</head>
-<body>
-    <div class="aaa">
-        <div class="section">{% include 'header.html' %}</div>
-        <div class="section">
-            <div class="proposals-section">
-                <div class="detailed-product-card">
-                    {% if plant.sale > 0 %}
-                        <div class="discount-badge">
-                            {{ plant.sale }}%
-                        </div>
-                    {% endif %}
-                    <img src="{{ url_for('static', filename=plant.picture) }}" alt="{{ plant.name }}" class="detailed-product-image">
-                    <div class="detailed-product-info">
-                        <h2 class="product-name">{{ plant.name }}</h2>
-                        <p class="product-description">{{ plant.description }}</p>
-                        <p class="category">Категория: <span>{{ plant.category }}</span></p> <!-- Замените на правильное свойство -->
-                        <p class="category">Осталось: <span>{{ plant.quantity|int }}</span></p> <!-- Замените на правильное свойство -->
-                        <p class="price">
-                            {% if plant.sale > 0 %}
-                                <span class="price original-price">{{ plant.price }} ₽</span>
-                                <span class="price discounted-price">{{ plant.price * (1 - (plant.sale / 100)) }} ₽</span>
-                            {% else %}
-                                <span class="price">{{ plant.price }} ₽</span>
-                            {% endif %}
-                        </p>
-                        {% if plant.quantity|int > 0%}
-                            {% set quantity = session.get('cart', {}).get(plant.id|string, 0) %}
-                            {% if quantity > 0 %}
-                                <a class="add-to-cart" data-plant-id="{{ plant.id }}" style="display: none">
-                                    Добавить в корзину
-                                </a>
-                                <div class="quantity-control" style="display: flex">
-                                    <button class="quantity-btn decrease" data-plant-id="{{ plant.id }}">-</button>
-                                    <span class="quantity">{{ quantity }}</span>
-                                    <button class="quantity-btn increase" data-plant-id="{{ plant.id }}">+</button>
-                                </div>
-                            {% else %}
-                                <a class="add-to-cart" data-plant-id="{{ plant.id }}">
-                                    Добавить в корзину
-                                </a>
-                                <div class="quantity-control">
-                                    <button class="quantity-btn decrease" data-plant-id="{{ plant.id }}">-</button>
-                                    <span class="quantity">0</span>
-                                    <button class="quantity-btn increase" data-plant-id="{{ plant.id }}">+</button>
-                                </div>
-                            {% endif %}
-                        {% else %}
-                            <a class="add-to-cart-none" data-plant-id="{{ plant.id }}">
-                                Товар закончился
-                            </a>
-                        {% endif %}
-
+{% extends "base.html" %}
+{% block content %}
+    <div class="section">
+        <div class="proposals-section-one-card">
+            <div class="detailed-product-card">
+                {% if plant.sale > 0 %}
+                    <div class="discount-badge">
+                        {{ plant.sale }}%
                     </div>
+                {% endif %}
+                <img src="{{ url_for('static', filename=plant.picture) }}" alt="{{ plant.name }}" class="detailed-product-image">
+                <div class="detailed-product-info">
+                    <h2 class="product-name">{{ plant.name }}</h2>
+                    <p class="product-description">{{ plant.description }}</p>
+                    <p class="category">Категория: <span>{{ plant.category }}</span></p> <!-- Замените на правильное свойство -->
+                    <p class="category">Осталось: <span>{{ plant.quantity|int }}</span></p> <!-- Замените на правильное свойство -->
+                    <p class="price">
+                        {% if plant.sale > 0 %}
+                            <span class="price original-price">{{ plant.price }} ₽</span>
+                            <span class="price discounted-price">{{ plant.price * (1 - (plant.sale / 100)) }} ₽</span>
+                        {% else %}
+                            <span class="price">{{ plant.price }} ₽</span>
+                        {% endif %}
+                    </p>
+                    {% if plant.quantity|int > 0%}
+                        {% set quantity = session.get('cart', {}).get(plant.id|string, 0) %}
+                        {% if quantity > 0 %}
+                            <a class="add-to-cart" data-plant-id="{{ plant.id }}" style="display: none">
+                                Добавить в корзину
+                            </a>
+                            <div class="quantity-control" style="display: flex">
+                                <button class="quantity-btn decrease" data-plant-id="{{ plant.id }}">-</button>
+                                <span class="quantity">{{ quantity }}</span>
+                                <button class="quantity-btn increase" data-plant-id="{{ plant.id }}">+</button>
+                            </div>
+                        {% else %}
+                            <a class="add-to-cart" data-plant-id="{{ plant.id }}">
+                                Добавить в корзину
+                            </a>
+                            <div class="quantity-control">
+                                <button class="quantity-btn decrease" data-plant-id="{{ plant.id }}">-</button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn increase" data-plant-id="{{ plant.id }}">+</button>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <a class="add-to-cart-none" data-plant-id="{{ plant.id }}">
+                            Товар закончился
+                        </a>
+                    {% endif %}
+
                 </div>
             </div>
         </div>
     </div>
-    {% include 'footer.html' %}
-    <script src="{{ url_for('static', filename='js/shop.js') }}"></script>
-</body>
-</html>
+{% endblock %}

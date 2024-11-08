@@ -10,6 +10,19 @@
     grid-template-columns: repeat(auto-fill, minmax(30%, 1fr)); /* Автоматическое распределение карточек */
     gap: 20px;
 }
+
+.proposals-section-one-card {
+    /* display: flex;
+    justify-content: space-between; *
+    /
+    flex-wrap: wrap;
+    gap: 10px; /* Отступы между карточками */
+
+    /* display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr)); Автоматическое распределение карточек */
+    /* gap: 20px; */
+    width: 100%;
+}
 .proposals-title {
     font-family: 'Microsoft Sans Serif',  sans-serif;
     font-size: 34px; /* Размер шрифта */

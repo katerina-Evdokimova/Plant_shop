@@ -78,4 +78,4 @@ def delete_from_cart():
 def created_cart_for_plant(plant_id):
     db_sess = db_session.create_session()
     plant = get_plant_by_id(db_sess, plant_id)  # Загрузка растенияы из БД
-    return render_template('card_plant.html', plant=plant, session=session, current_user=current_user, admin=is_admin(db_sess, current_user.id))
+    return render_template('card_plant.html', plant=plant, session=session, title=f'{plant.name}')

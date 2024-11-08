@@ -16,7 +16,7 @@
 
 .detailed-product-info {
     padding: 20px;
-    width: 60%; /* Ширина информации о продукте */
+    width: 100%; /* Ширина информации о продукте */
 }
 
 .product-name {

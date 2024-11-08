@@ -1,48 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PLANT | Таблица данных</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/headers.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/table.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/footers.css') }}" rel="stylesheet" />
-</head>
-<body>
-    <div class="aaa">
-        <div class="section">{% include 'header.html' %}</div>
-        <div class="section">
+{% extends "base.html" %}
+{% block content %}
+    <div class="section">
 
-            <table id="data-table" data-table-type="{{ name_table }}">
-                <thead>
-                    <tr>
-                        {% for col in title %}
-                            <th data-column="{{ loop.index0 }}" onclick="handleColumnSort('{{ loop.index0 }}')">
-                                {{ col }}
-                                <span class="sort-icon" id="sort-icon-{{ loop.index0 }}"></span>
-                            </th>
-                        {% endfor %}
-                        <th>Подробнее</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body">
-                    <!-- Данные таблицы загружаются динамически -->
-                </tbody>
-            </table>
+        <table id="data-table" data-table-type="{{ name_table }}">
+            <thead>
+                <tr>
+                    {% for col in title %}
+                        <th data-column="{{ loop.index0 }}" onclick="handleColumnSort('{{ loop.index0 }}')">
+                            {{ col }}
+                            <span class="sort-icon" id="sort-icon-{{ loop.index0 }}"></span>
+                        </th>
+                    {% endfor %}
+                    <th>Подробнее</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!-- Данные таблицы загружаются динамически -->
+            </tbody>
+        </table>
 
-            <div class="pagination" id="pagination">
-                <button onclick="changePage('prev')" id="prevButton">Назад</button>
-                <div id="pageNumbers"></div>
-                <button onclick="changePage('next')" id="nextButton">Далее</button>
-            </div>
+        <div class="pagination" id="pagination">
+            <button onclick="changePage('prev')" id="prevButton">Назад</button>
+            <div id="pageNumbers"></div>
+            <button onclick="changePage('next')" id="nextButton">Далее</button>
         </div>
     </div>
-    {% include 'footer.html' %}
-
-<script src="{{ url_for('static', filename='js/table.js') }}"></script>
-
-</body>
-</html>
+{% endblock %} 

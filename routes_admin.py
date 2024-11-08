@@ -12,7 +12,7 @@ def admin_dashboard():
     db_sess = db_session.create_session()
     if not is_admin(db_sess, current_user.id):  # Проверка наличия объекта Admin у пользователя
         abort(403)  # Ошибка доступа "403 Forbidden", если пользователь не администратор
-    return render_template('panel_for_admins.html', current_user=current_user, admin=True)
+    return render_template('panel_for_admins.html', current_user=current_user, admin=True, title='admin')
     
 
 @app.route('/admin/table')
