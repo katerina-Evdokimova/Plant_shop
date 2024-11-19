@@ -65,7 +65,7 @@ function loadTopProducts() {
         const productCards = data.map(item => `
             <div class="col-12 col-md-4 mb-4">
                 <div class="card">
-                    <img src="/static/${item.image}" class="card-img-top" alt="${item.name}">
+                    <img src="/static/${item.image}" class="card-img-top" alt="${item.name}" onerror="this.onerror=null; this.src='/static/images/sad-plant.png';">
                     <div class="card-body text-center">
                         <h6 class="card-title">${item.name}</h6>
                         <p class="text-muted">${item.category}</p>

@@ -43,7 +43,7 @@ input, select {
     box-sizing: border-box;
 }
 
-button {
+button #checkout{
     background-color: rgba(68, 41, 56, 1);
     color: #fff;
     padding: 10px;
@@ -53,8 +53,44 @@ button {
     cursor: pointer;
     text-transform: uppercase;
 }
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
 
-button:hover {
+.form-group {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.form-group #img {
+    flex: 1;
+    margin-right: 10px;
+    position: relative;
+    top: 70px;
+    margin-top: 10px;
+}
+
+.form-group:last-child {
+    margin-right: 0;
+}
+
+.delete-icon {
+    width: 20px;
+    height: auto;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: transform 0.2s;
+}
+
+.delete-icon:hover {
+    transform: scale(1.1);
+}
+
+
+
+button #checkout:hover {
     background-color: rgba(68, 41, 56, 0.8);
 }
 .summary-item {

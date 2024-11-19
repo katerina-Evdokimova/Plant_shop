@@ -12,7 +12,7 @@ def global_init(db_url):
     if __factory:
         return
 
-    engine = sa.create_engine(db_url, echo=False)
+    engine = sa.create_engine(db_url, echo=False, pool_size=50, max_overflow=20, pool_timeout=60)
     __factory = sessionmaker(bind=engine)
 
     from . import __all_models

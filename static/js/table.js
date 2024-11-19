@@ -150,13 +150,33 @@ function renderPagination() {
     const pageNumbers = document.getElementById('pageNumbers');
     pageNumbers.innerHTML = '';
 
-    for (let i = 1; i <= totalPages; i++) {
+    const buttonsToShow = []; // Массив для хранения кнопок, которые мы будем показывать
+
+    // Определяем страницы для отображения
+    if (totalPages <= 3) {
+        // Если страниц меньше или равно 3, показываем все
+        for (let i = 1; i <= totalPages; i++) {
+            buttonsToShow.push(i);
+        }
+    } else {
+        // Если текущая страница не на первой и не на последней, отображаем текущую, предшествующую и следующую
+        if (currentPage === 1) {
+            buttonsToShow.push(1, 2, 3); // Первые три страницы
+        } else if (currentPage === totalPages) {
+            buttonsToShow.push(totalPages - 2, totalPages - 1, totalPages); // Последние три страницы
+        } else {
+            buttonsToShow.push(currentPage - 1, currentPage, currentPage + 1); // Текущая и по одной рядом
+        }
+    }
+
+    // Создаем кнопки для отображения
+    buttonsToShow.forEach(i => {
         const button = document.createElement('button');
         button.textContent = i;
         button.classList.toggle('active', i === currentPage);
         button.addEventListener('click', () => goToPage(i));
         pageNumbers.appendChild(button);
-    }
+    });
 
     document.getElementById('prevButton').disabled = currentPage <= 1;
     document.getElementById('nextButton').disabled = currentPage >= totalPages;

@@ -33,8 +33,8 @@
     font-size: 1.5em;
     color: #000;
 }
-.category, .price {
-    font-size: 16px; /* Размер шрифта для категории и цены */
+.category {
+    font-size: 16px;
     margin-bottom: 10px;
 }
 

@@ -19,7 +19,7 @@
                         {% endif %}
                     </p>
                     {% if plant.quantity|int > 0 %}
-                        <div class="quantity-control">
+                        <div class="quantity-control" style="display: flex">
                             <button class="quantity-btn decrease" data-plant-id="{{ plant.id }}">-</button>
                             <span class="quantity">{{ session.get('cart', {}).get(plant.id|string, 0) }}</span>
                             <button class="quantity-btn increase" data-plant-id="{{ plant.id }}">+</button>

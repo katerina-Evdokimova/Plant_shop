@@ -13,8 +13,9 @@
     <link href="{{ url_for('static', filename='css/footers.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='css/trash.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='css/404.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/card_plant.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='css/order_details.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/admins.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/card_plant.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='css/table.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='css/checkout.css') }}" rel="stylesheet" />
 </head>
@@ -28,6 +29,8 @@
     {% include 'footer.html' %}
     <script src="{{ url_for('static', filename='js/load.js') }}"></script>
     <script src="{{ url_for('static', filename='js/shop.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='js/dashboards.js') }}"></script>
     <script src="{{ url_for('static', filename='js/table.js') }}"></script>
 </body>

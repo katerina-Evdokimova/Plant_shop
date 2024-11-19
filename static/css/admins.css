@@ -62,8 +62,15 @@
 .card-img-top {
     object-fit: cover;
     width: 100%;
-    height: 120px; /* Фиксированная высота для более компактного изображения */
+    min-height: 125px; /* Минимальная высота, которая занимает пространство */
     border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Разделительная линия */
+    background-color: rgba(44, 90, 26, 0.66); /* Задний фон по умолчанию */
+}
+.card-img-top:empty {
+    background-color: rgba(44, 90, 26, 0.66);
+    background-size: cover; /* Покрытие всего пространства */
+    background-position: center; /* Центрируем изображение на фоне */
+
 }
 
 /* Текстовые элементы внутри карточки */

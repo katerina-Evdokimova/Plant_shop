@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="section">
+    <div class="container">
+        <h1>Редактирование профиля</h1>
+        <form id="profileForm" action="/save_profile" method="POST">
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="login">Логин:</label>
+                    <input type="text" id="login" name="login" required value="{{ user.login }}">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required value="{{ user.email }}">
+                </div>
+                
+                    <button type="button" onclick="togglePasswordFields()">Сменить пароль</button>
+                
+            </div>
+            
+
+            <div class="form-row" id="password-fields" style="display: none;">
+                <div class="form-group">
+                    <label for="new_password">Новый пароль:</label>
+                    <input type="password" id="new_password" name="new_password">
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password">Подтверждение пароля:</label>
+                    <input type="password" id="confirm_password" name="confirm_password">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="phone">Телефон:</label>
+                    <input type="text" id="phone" name="phone" required value="{{ user.phone }}">
+                </div>
+                <div class="form-group">
+                    <label for="gender">Пол:</label>
+                    <select id="gender" name="gender" required>
+                        <option value="Male" {% if user.gender == 'Male' %}selected{% endif %}>Мужской</option>
+                        <option value="Female" {% if user.gender == 'Female' %}selected{% endif %}>Женский</option>
+                        <option value="Other" {% if user.gender == 'Other' %}selected{% endif %}>Другой</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="birth_date">Дата рождения:</label>
+                    <input type="date" id="birth_date" name="birth_date" value="{{ user.birth_date }}">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="first_name">Имя:</label>
+                    <input type="text" id="first_name" name="first_name" required value="{{ user.first_name }}">
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Фамилия:</label>
+                    <input type="text" id="last_name" name="last_name" required value="{{ user.last_name }}">
+                </div>
+                <div class="form-group">
+                    <label for="middle_name">Отчество:</label>
+                    <input type="text" id="middle_name" name="middle_name" value="{{ user.middle_name }}">
+                </div>
+            </div>
+            <label for="addresses">Адреса:</label>
+            <div class="form-row address-container">
+                
+                <div class="form-row">
+                    
+                    <div class="form-group">
+                        
+                    
+                        <select id="addresses" name="addresses">
+                            {% for address in addresses %}
+                            <option value="{{ address.id }}">{{ address.address }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <img src="{{ url_for('static', filename='images/trash.png') }}" alt="Удалить" class="delete-icon" title="Удалить адрес" onclick="deleteAddress()">
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <button type="submit" id="save-button" style="display: none;">Сохранить</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function togglePasswordFields() {
+        const fields = document.getElementById('password-fields');
+        fields.style.display = fields.style.display === 'none' ? 'block' : 'none';
+    }    function deleteAddress() {
+        // Функция для удаления адреса
+        alert('Адрес удалён');
+        // Здесь можно добавить код для удаления адреса
+    }
+
+    // Отображение кнопки "Сохранить" если есть изменения
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', () => {
+            document.getElementById('save-button').style.display = 'block';
+        });
+    });
+</script>
+{% endblock %}

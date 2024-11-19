@@ -24,8 +24,11 @@ def add_to_cart():
     cart = session['cart']
 
     # Если товар уже в корзине, увеличиваем его количество
+    db_sess = db_session.create_session()
+    plant = get_plant_by_id(db_sess, product_id) 
     if product_id in cart:
-        cart[product_id] += 1
+        if plant.quantity > cart[product_id]:
+            cart[product_id] += 1 
     else:
         cart[product_id] = 1  # Добавляем новый товар с количеством 1
 

@@ -30,7 +30,7 @@ def reload():
 def trash():
     db_sess = db_session.create_session()
     plants = [get_plant_by_id(db_sess, idx) for idx in session['cart'].keys()] if 'cart' in session else []
-    return render_template('trash.html', plants=plants, session=session, current_user=current_user, admin=False, title='корзина')
+    return render_template('trash.html', plants=plants, session=session, current_user=current_user, admin=False, title='Корзина')
 
 @app.route('/catalog')
 def catalog():
@@ -43,7 +43,7 @@ def catalog():
     plants = get_plants(db_sess, sort_order)
     db_sess = db_session.create_session()
     plants = get_plants(db_sess)
-    return render_template('catalog.html',current_user=current_user, products=plants, session=session, n=12, title='каталог')
+    return render_template('catalog.html',current_user=current_user, products=plants, session=session, n=12, title='Каталог')
 
 
 @app.route('/catalog/sort', methods=['POST'])
@@ -161,7 +161,7 @@ def checkout():
     plants = [get_plant_by_id(db_sess, idx) for idx in session['cart'].keys()] if 'cart' in session else []
     total_sum = sum([session['cart'][str(plant.id)] * plant.price * (1 - plant.sale / 100) for plant in plants])
     all_aum = sum([session['cart'][str(plant.id)] * plant.price for plant in plants])
-    return render_template('checkout.html', current_user=current_user, user_addresses=adress, plants=plants, total_sum=total_sum, all_sum=all_aum, admin=False, title='оформление')  # Отображение формы для оформления заказа
+    return render_template('checkout.html', current_user=current_user, user_addresses=adress, plants=plants, total_sum=total_sum, all_sum=all_aum, admin=False, title='Оформление')  # Отображение формы для оформления заказа
 
 
 
@@ -195,7 +195,7 @@ def register():
         flash('Регистрация прошла успешно!', 'success')
         return redirect(next_page or url_for('login'))
     
-    return render_template('register.html', form=form, title='регистрация')
+    return render_template('register.html', form=form, title='Регистрация')
 
 
 @app.route('/order_confirmation')
@@ -222,7 +222,7 @@ def my_orders():
         order_item = delails_order_by_order_id(db_sess, order.id)
         total_amount[order.id] =  sum(item['price'] for item in order_item)
         
-    return render_template('orders.html', orders=orders, total_amount=total_amount, admin=False, title='заказы')
+    return render_template('orders.html', orders=orders, total_amount=total_amount, admin=False, title='Заказы')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -239,18 +239,33 @@ def login():
         else:
             flash('Неверный логин или пароль', 'danger')
     
-    return render_template('login.html', form=form, admin=False, title='логин')
+    return render_template('login.html', form=form, admin=False, title='Логин')
 
 @app.route('/account')
 def account():
     if current_user.is_authenticated:
-        # Логика для авторизованных пользователей
-        pass
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.id == current_user.id).first()
+        client_id = get_client_by_id(db_sess, current_user.id).id
+        adress = [el for el in get_address_by_id(db_sess, client_id)]
+        adress = adress if adress else []
+        print(adress)
+
+        return render_template('profile.html', user=user, addresses=adress, admin=False, title='Аккаунт')
+
     else:
         return redirect(url_for('login'))
     
 
 @app.route('/seller')
+@login_required
 def seller_dashboard():
-    # Логика для продавца
-    pass
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).filter(User.id == current_user.id).first()
+    client_id = get_client_by_id(db_sess, current_user.id).id
+    adress = [el for el in get_address_by_id(db_sess, client_id)]
+    adress = adress if adress else []
+    print(adress)
+
+    return render_template('profile.html', users=user, addresses=adress, admin=False, title='Аккаунт')
+

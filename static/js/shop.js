@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!iconContainer.contains(event.target)) {
                 console.log('Клик произошел вне объекта.');
                 var dropdown = document.getElementById('dropdown-menu');
-                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                dropdown.style.display = 'none';
                 console.log("ff+")
             }
         });
