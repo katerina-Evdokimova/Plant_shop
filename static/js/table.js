@@ -55,6 +55,8 @@ async function loadTableData(page = 1, tableType = currentTableType, sortConfig 
             if (header === "Роль") {
                 cell.classList.add("role-cell");
                 cell.innerHTML = generateRoleDropdown(item["Роль"], item["id"]);
+            }else if (header === "Статус") {
+                cell.innerHTML = generateStatusDropdown(item["Статус"], item["Номер заказа"]);
             }else if (header == "Подробнее"){
            
                 const linkCell = document.createElement('td');
@@ -64,8 +66,8 @@ async function loadTableData(page = 1, tableType = currentTableType, sortConfig 
                 linkCell.appendChild(link);
                 row.appendChild(linkCell);
             }
-             else {
-                console.log(header == "Почта", header)
+            else {
+    
                 cell.textContent = item[header] || '';
             }
             row.appendChild(cell);
@@ -75,6 +77,38 @@ async function loadTableData(page = 1, tableType = currentTableType, sortConfig 
     
     });
 }
+// Генерация HTML для статуса с выпадающим списком
+function generateStatusDropdown(currentStatus, orderId) {
+    const statuses = ['обработка', 'одобрен', 'отклонён']; // Возможные статусы
+    let html = `<select onchange="handleStatusChange(this.value, ${orderId})">`;
+
+    statuses.forEach(status => {
+        const selected = status === currentStatus ? 'selected' : '';
+        html += `<option value="${status}" ${selected}>${status}</option>`;
+    });
+
+    html += `</select>`;
+    return html;
+}
+
+// Обработка изменения статуса
+async function handleStatusChange(newStatus, orderId) {
+    if (confirm(`Вы уверены, что хотите изменить статус на "${newStatus}" у заказа "${orderId}"?`)) {
+        const response = await fetch('/api/update_status', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderId, newStatus })
+        });
+
+        if (response.ok) {
+            alert("Статус успешно обновлён");
+            loadTableData(currentPage, getTableType()); // Перезагружаем таблицу
+        } else {
+            alert("Ошибка при обновлении статуса");
+        }
+    }
+}
+
 
 // Генерация HTML для выпадающего списка с ролями
 function generateRoleDropdown(roles, userId) {

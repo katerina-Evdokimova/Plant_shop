@@ -32,8 +32,10 @@
             <div id="dropdown-menu" class="dropdown-menu">
                 {% if current_user.is_authenticated %}
                     <a href="/account" class="dropdown-item">Аккаунт</a>
-                    {% if not admin %}
+                    
                     <a href="/orders" class="dropdown-item">Заказы</a>
+                    {% if admin %}
+                    <a href="/admin" class="dropdown-item">Админ</a>
                     {% endif %}
                     <a href="/logout" class="dropdown-item">Выйти</a>
                 {% else %}

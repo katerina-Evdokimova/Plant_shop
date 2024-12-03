@@ -231,8 +231,7 @@ def is_admin(session: Session, user_id: int):
 
 def get_sorted_data(table_name, sort_config):
     # Извлекаем параметры сортировки из запроса
-    
-    
+
     db_sess = db_session.create_session()
 
     if table_name == 'users':

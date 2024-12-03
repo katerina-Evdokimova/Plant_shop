@@ -10,7 +10,7 @@ from data.order import Order
 from login_manager import *
 from query_bd import *
 from datetime import datetime
-
+import sqlalchemy as sa
 
 # Настройки для пагинации
 PER_PAGE = 10
@@ -75,7 +75,6 @@ def get_table_data():
     print(items)
     return jsonify({"items": items})
 
-
 @app.route('/api/update_role', methods=['POST'])
 def update_role():
     data = request.json
@@ -108,11 +107,9 @@ def update_role():
     else:
         return jsonify({"error": "Пользователь не найден"}), 404
     
-
 @app.route('/api/product_data')
 def product_data():
     return jsonify(get_product_data())
-
 
 @app.route('/api/user_data')
 def user_data():
@@ -125,6 +122,36 @@ def recent_activity():
 @app.route('/api/order_statuses')
 def order_statuses():
     return jsonify(get_order_statuses())
+
+@app.route('/api/update_status', methods=['POST'])
+def update_status():
+    print('***********' * 8)
+    data = request.json
+    print(data)
+
+    order_id = data.get('orderId')
+    new_status = data.get('newStatus')
+
+    if not order_id or not new_status:
+        return jsonify({"error": "Invalid data"}), 400
+
+    # Обновляем данные в базе (здесь пример без реальной базы)
+    # Например, с использованием SQLAlchemy:
+    db_sess = db_session.create_session()
+    order = db_sess.query(Order).filter_by(id=order_id).first()
+    if not order:
+        return jsonify({"error": "Order not found"}), 404
+    print(order)
+    order.status = new_status
+    order.date = sa.func.current_timestamp()
+    
+    print(order)
+
+    db_sess.commit()
+
+    print(f"Order {order_id} updated to {new_status}")  # Для отладки
+    return jsonify({"success": True, "message": "Status updated"}), 200
+
 
 @app.route('/api/top_products')
 def top_products():
