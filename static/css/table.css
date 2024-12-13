@@ -1,3 +1,6 @@
+body{
+    font-family: None;
+}
 table {
     width: 100%;
     border-collapse: collapse;
@@ -63,4 +66,20 @@ th {
 .sorted-desc .sort-icon {
     visibility: visible;
     content: '▼';  /* Стрелка вниз */
+}
+
+.role-dropdown {
+    position: relative; /* Сделать этот элемент контекстом для позиционирования */
+    display: inline-block; /* Чтобы кнопка занимала только необходимое пространство */
+}
+
+.dropdown-content {
+    position: absolute; /* Позволяет свободно позиционировать относительно родителя */
+    top: 0; /* Совпадает с верхней частью родителя */
+    left: 0; /* Совпадает с левой частью родителя */
+    border: 1px solid #ccc; /* Добавим границу для визуального выделения */
+    background-color: white; /* Фоновый цвет для выпадающего меню */
+    z-index: 1000; /* Обеспечьте, что оно будет сверху других элементов */
+    display: none; /* Скрыто по умолчанию */
+    width: 150px; /* Задайте ширину по вашему усмотрению */
 }

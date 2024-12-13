@@ -111,7 +111,7 @@ def get_order_statuses():
     status_counts = Counter(order.status for order in db_sess.query(Order).all())
     return {'processing': status_counts.get('обработка', 0),
             'approved': status_counts.get('одобрен', 0),
-            'error': status_counts.get('отклонен', 0)}
+            'error': status_counts.get('отклонен', 0) if status_counts.get('отклонен', 0) else status_counts.get('отклонён', 0)}
 
 def get_top_products():
     db_sess = db_session.create_session()

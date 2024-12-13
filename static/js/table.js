@@ -57,15 +57,15 @@ async function loadTableData(page = 1, tableType = currentTableType, sortConfig 
                 cell.innerHTML = generateRoleDropdown(item["Роль"], item["id"]);
             }else if (header === "Статус") {
                 cell.innerHTML = generateStatusDropdown(item["Статус"], item["Номер заказа"]);
-            }else if (header == "Подробнее"){
+            }// }else if (header == "Подробнее"){
            
-                const linkCell = document.createElement('td');
-                const link = document.createElement('a');
-                link.href = item.href;
-                link.textContent = 'Перейти';
-                linkCell.appendChild(link);
-                row.appendChild(linkCell);
-            }
+            //     const linkCell = document.createElement('td');
+            //     const link = document.createElement('a');
+            //     link.href = item.href;
+            //     link.textContent = 'Перейти';
+            //     linkCell.appendChild(link);
+            //     row.appendChild(linkCell);
+            // }
             else {
     
                 cell.textContent = item[header] || '';
@@ -79,7 +79,7 @@ async function loadTableData(page = 1, tableType = currentTableType, sortConfig 
 }
 // Генерация HTML для статуса с выпадающим списком
 function generateStatusDropdown(currentStatus, orderId) {
-    const statuses = ['обработка', 'одобрен', 'отклонён']; // Возможные статусы
+    const statuses = ['обработка', 'одобрен', 'отклонен']; // Возможные статусы
     let html = `<select onchange="handleStatusChange(this.value, ${orderId})">`;
 
     statuses.forEach(status => {
@@ -118,7 +118,6 @@ function generateRoleDropdown(roles, userId) {
                   <div class="dropdown-content" style="display: none;">`;
 
     availableRoles.forEach(role => {
-
         const checked = roles.includes(role) ? "checked" : "";
         html += `<label><input type="checkbox" ${checked} onclick="handleRoleChange(event, '${role}', ${userId})"> ${role}</label>`;
     });
@@ -127,6 +126,10 @@ function generateRoleDropdown(roles, userId) {
     return html;
 }
 
+function toggleRoleDropdown(dropdown) {
+    const dropdownContent = dropdown.querySelector('.dropdown-content');
+    dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+}
 // Показ или скрытие выпадающего списка ролей
 function toggleRoleDropdown(dropdown) {
     const content = dropdown.querySelector(".dropdown-content");
@@ -174,9 +177,9 @@ function updateTableHeaders(headers) {
     });
 
     // Добавляем колонку для кнопки перехода
-    const detailTh = document.createElement('th');
-    detailTh.textContent = 'Подробнее';
-    tableHeader.appendChild(detailTh);
+    // const detailTh = document.createElement('th');
+    // detailTh.textContent = 'Подробнее';
+    // tableHeader.appendChild(detailTh);
 }
 
 // Рендерим элементы пагинации

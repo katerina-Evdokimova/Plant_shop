@@ -161,7 +161,7 @@ def top_products():
 def get_table_data_by_type(session, name_table: str, data=None):
     # Заголовки столбцов для каждой таблицы
     titles = {
-        'plants': ["Название", "Категория", "Цена", "Количество"],
+        'plants': ["Название", "Категория", "Цена", "Количество", "Скидка"],
         'users': ["id", "Логин", "Почта", "Телефон", "Пол", "Имя", "Фамилия", "Дата рождения", "Дата регистрации", "Роль"],
         'orders': ["Номер заказа", "id клиента", "Статус", "Метод оплаты", "Адрес", "Дата последнего изменения"]
     }
@@ -176,6 +176,7 @@ def get_table_data_by_type(session, name_table: str, data=None):
                titles['plants'][1]: plant.category.name if plant.category else 'Нет категории',
                titles['plants'][2]: plant.price,
                titles['plants'][3]: plant.quantity,
+               titles['plants'][4]: plant.sale,
                "href": f"plants/{plant.id}"
             }
             for plant in data
