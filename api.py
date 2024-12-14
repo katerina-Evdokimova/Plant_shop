@@ -18,7 +18,7 @@ PER_PAGE = 10
 def format_datetime(dt):
     # Проверяем, если дата уже объект datetime
     if not isinstance(dt, str):
-        return dt.strftime("%d.%m.%y %H:%M")
+        return dt.strftime("%d.%m.%Y %H:%M")
     
     # Если дата в строковом формате, пытаемся конвертировать её
     print(type(dt))
@@ -41,6 +41,7 @@ def get_total_pages():
 @app.route('/api/table_data')
 def get_table_data():
     name_table = request.args.get('name', '')
+    print(1)
     # Извлекаем параметры сортировки из запроса
     sort_config = {}
     for key, value in request.args.items():
@@ -48,25 +49,29 @@ def get_table_data():
             column_index = int(key.split('_')[1])
             sort_config[column_index] = value
 
+    print(1)
 
     data = get_sorted_data(name_table, sort_config)
+    data = data[:20]
     # print(data)
 
     db_sess = db_session.create_session()
+    print(1)
     print(name_table)
     title, table_data = get_table_data_by_type(db_sess, name_table, data)
     
     # Получаем список ролей для каждого пользователя
     if name_table == 'users':
+        print(table_data)
         role_data = {user['id']: ', '.join(get_user_role(db_sess, user['id'])) for user in table_data}
-
+        print(role_data)
         # Применяем сортировку к данным
         for column_index, direction in sort_config.items():
             if column_index == 9:  # Индекс колонки с ролями
                 reverse = direction == 'desc'
                 # Сортируем по ролям, используя role_data для каждого user
                 table_data.sort(key=lambda x: role_data.get(x['id'], ''), reverse=reverse)
-
+    print(2)
 
     page = int(request.args.get('page', 1))
     start = (page - 1) * PER_PAGE
@@ -184,7 +189,7 @@ def get_table_data_by_type(session, name_table: str, data=None):
     
     elif name_table == 'users':
         if not data:
-            data = session.query(User).all()
+            data = session.query(User).limit(10).all()
         result = [
             {
                 titles[name_table][0]: user.id,
@@ -200,7 +205,9 @@ def get_table_data_by_type(session, name_table: str, data=None):
                 "href": f"users/{user.id}"
             }
             for user in data
+        
         ]
+
     
     elif name_table == 'orders':
         if not data:

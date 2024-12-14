@@ -21,10 +21,10 @@ def table_view():
     # Передаем данные для таблицы
     name_table = request.args.get('name', '')
     db_sess = db_session.create_session()
-
     if is_admin(db_sess, current_user.id):
         title, table_data = get_table_data_by_type(db_sess, name_table)
 
+        print(table_data)
         # Параметры пагинации
         page = int(request.args.get('page', 1))  # текущая страница
         per_page = 10  # количество записей на странице
