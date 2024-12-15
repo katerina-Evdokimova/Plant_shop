@@ -8,6 +8,26 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Тень для объема */
 }
 
+.logo {
+    font-size: 50px !important;
+    font-family: 'Microsoft Sans Serif', sans-serif !important;
+    color: rgba(44, 90, 26, 1) !important;
+  }
+
+  .logo span{
+    font-size: 50px !important;
+    font-family: 'Microsoft Sans Serif', sans-serif !important;
+    color: rgba(44, 90, 26, 1) !important;
+  }
+
+  .nav-link {
+    font-family: 'Tiro Bangla', sans-serif !important;
+    font-size: 18px !important;
+    color: rgba(0, 0, 0, 0.55) !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+}
+  
 /* Заголовок формы */
 .auth-title {
     text-align: center;

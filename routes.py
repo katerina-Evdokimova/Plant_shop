@@ -216,7 +216,9 @@ def order_confirmation():
 def my_orders():
     # Получаем заказы текущего пользователя
     db_sess = db_session.create_session()
-    orders = db_sess.query(Order).filter(Order.client_id == current_user.id).all()
+    client = db_sess.query(Client).filter(Client.user_id == current_user.id).first()
+    orders = db_sess.query(Order).filter(Order.client_id == client.id).all()
+    print(orders, current_user.id)
     total_amount = {}
     for order in orders:
         order_item = delails_order_by_order_id(db_sess, order.id)

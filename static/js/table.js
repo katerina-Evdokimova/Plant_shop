@@ -28,8 +28,9 @@ async function fetchTotalPages(tableType) {
 
 // Загружаем данные таблицы для текущей страницы и текущего типа таблицы
 // Загрузка данных таблицы
+// Загружаем данные таблицы для текущей страницы и текущего типа таблицы
 async function loadTableData(page = 1, tableType = currentTableType, sortConfig = {}) {
-    console.log("loadData")
+    console.log("loadData");
     const params = new URLSearchParams();
     params.append('name', document.getElementById('data-table').dataset.tableType);
     params.append('page', page);
@@ -38,45 +39,103 @@ async function loadTableData(page = 1, tableType = currentTableType, sortConfig 
     Object.keys(sortConfig).forEach(columnIndex => {
         params.append(`sort_${columnIndex}`, sortConfig[columnIndex]);
     });
-    
+
     const response = await fetch(`/api/table_data?${params.toString()}`);
     const data = await response.json();
-    
+
     const tableBody = document.getElementById('table-body');
     tableBody.innerHTML = '';
 
     data.items.forEach(item => {
-        console.log(item)
+        console.log(item);
         const row = document.createElement('tr');
 
         // Перебираем данные по заголовкам
         getTableHeaders().forEach(header => {
             const cell = document.createElement('td');
-            if (header === "Роль") {
+
+            // Если колонка "Цена", "Количество" или "Скидка", делаем редактируемой
+            if (["Цена", "Количество", "Скидка"].includes(header)) {
+                cell.innerHTML = `<span class="editable-cell">${item[header] || ''}</span>`;
+                cell.addEventListener('click', () => makeCellEditable(cell, header, item["id"]));
+            } else if (header === "Роль") {
                 cell.classList.add("role-cell");
                 cell.innerHTML = generateRoleDropdown(item["Роль"], item["id"]);
-            }else if (header === "Статус") {
+            } else if (header === "Статус") {
                 cell.innerHTML = generateStatusDropdown(item["Статус"], item["Номер заказа"]);
-            }// }else if (header == "Подробнее"){
-           
-            //     const linkCell = document.createElement('td');
-            //     const link = document.createElement('a');
-            //     link.href = item.href;
-            //     link.textContent = 'Перейти';
-            //     linkCell.appendChild(link);
-            //     row.appendChild(linkCell);
-            // }
-            else {
-    
+            } else {
                 cell.textContent = item[header] || '';
             }
             row.appendChild(cell);
         });
 
         tableBody.appendChild(row);
-    
     });
 }
+
+function makeCellEditable(cell, fieldName, itemId) {
+    // Проверяем, не редактируется ли уже эта ячейка
+    if (cell.dataset.isEditing === "true") {
+        return;
+    }
+
+    // Устанавливаем флаг редактирования
+    cell.dataset.isEditing = "true";
+
+    const currentValue = cell.textContent.trim();
+    cell.innerHTML = `
+        <input type="text" class="editable-input" value="${currentValue}">
+        <button class="save-btn">✔</button>
+        <button class="cancel-btn">✖</button>
+    `;
+
+    const input = cell.querySelector('.editable-input');
+    const saveBtn = cell.querySelector('.save-btn');
+    const cancelBtn = cell.querySelector('.cancel-btn');
+
+    // Обработка сохранения
+    saveBtn.addEventListener('click', () => saveEditedValue(input, fieldName, itemId, cell));
+    // Обработка отмены
+    cancelBtn.addEventListener('click', () => cancelEdit(cell, currentValue));
+}
+
+// Сохранение нового значения в ячейке
+async function saveEditedValue(input, fieldName, itemId, cell) {
+    const newValue = input.value.trim();
+    if (newValue === '') {
+        alert("Поле не может быть пустым!");
+        return;
+    }
+
+    const response = await fetch('/api/update_item_field', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            id: itemId,
+            field: fieldName,
+            value: newValue
+        })
+    });
+
+    if (response.ok) {
+        alert("Данные успешно обновлены");
+        cell.innerHTML = `<span class="editable-cell">${newValue}</span>`;
+        cell.addEventListener('click', () => makeCellEditable(cell, fieldName, itemId));
+    } else {
+        alert("Ошибка при обновлении данных");
+        cancelEdit(cell, input.defaultValue);
+    }
+
+    // Сбрасываем флаг редактирования
+    cell.dataset.isEditing = "false";
+}
+
+// Отмена редактирования
+function cancelEdit(cell, originalValue) {
+    cell.innerHTML = `<span class="editable-cell">${originalValue}</span>`;
+    cell.dataset.isEditing = "false"; // Сбрасываем флаг
+}
+
 // Генерация HTML для статуса с выпадающим списком
 function generateStatusDropdown(currentStatus, orderId) {
     const statuses = ['обработка', 'одобрен', 'отклонен']; // Возможные статусы

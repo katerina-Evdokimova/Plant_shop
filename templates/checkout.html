@@ -37,56 +37,70 @@
                             <option value="cash">Наличные</option>
                         </select>
                     </div>
+                    <div class="checkout-summary">
+                        <h3>Ваш заказ</h3>
+                        <div class="summary-item">
+                            {% for plant in plants %}
+                                <div class="product-row">
+                                    <span class="product-name">{{ plant.name }}</span>
+                                    <span class="product-name">{{ session['cart'][plant.id|string] }} x {{ plant.price }} ₽</span>
+                                    <span class="product-price">{{ session['cart'][plant.id|string] * plant.price }} ₽</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <hr class="divider">
+                        
+                        <div class="product-row">
+                            <span class="product-name">Общая сумма:</span>
+                            <span class="product-name"></span>
+                            <span class="product-price">{{ all_sum }} ₽</span>
+                        </div>
+                        
+                        <hr class="divider">
+                        
+                        <div class="product-row">
+                            <span>Сумма скидки:</span>
+                            <span class="product-name"></span>
+                            <span class="summary-total-sale">{{ all_sum - total_sum }} ₽</span>
+                        </div>
+                        
+                        <hr class="divider">
+                        
+                        <div class="product-row">
+                            <span>Итого:</span>
+                            <span class="product-name"></span>
+                            <span class="summary-total">{{ total_sum }} ₽</span>
+                        </div>
+                </div>
                     <div class="section"><button class="checkout" type="submit">Оформить заказ</button></div>
                 </form>
                     
             </div>
                 <!-- Краткая сводка о заказе -->
-            <div class="checkout-summary">
-                    <h3>Ваш заказ</h3>
-                    <div class="summary-item">
-                        {% for plant in plants %}
-                            <div class="product-row">
-                                <span class="product-name">{{ plant.name }}</span>
-                                <span class="product-name">{{ session['cart'][plant.id|string] }} x {{ plant.price }} ₽</span>
-                                <span class="product-price">{{ session['cart'][plant.id|string] * plant.price }} ₽</span>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    
-                    <hr class="divider">
-                    
-                    <div class="product-row">
-                        <span class="product-name">Общая сумма:</span>
-                        <span class="product-price">{{ all_sum }} ₽</span>
-                    </div>
-                    
-                    <hr class="divider">
-                    
-                    <div class="product-row">
-                        <span>Сумма скидки:</span>
-                        <span class="summary-total-sale">{{ all_sum - total_sum }} ₽</span>
-                    </div>
-                    
-                    <hr class="divider">
-                    
-                    <div class="product-row">
-                        <span>Итого:</span>
-                        <span class="summary-total">{{ total_sum }} ₽</span>
-                    </div>
-            </div>
+            
         </div>
    
-    <script>
-        // Показ поля для нового адреса, если выбран пункт "Добавить новый адрес"
-        document.querySelector('.address-dropdown').addEventListener('change', function() {
-            console.log('+++');
-            var newAddressField = document.querySelector('.new-address');
-            if (this.value === 'new') {
-                newAddressField.style.display = 'block';
-            } else {
-                newAddressField.style.display = 'none';
-            }
-        });
-    </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var addressDropdown = document.querySelector('.address-dropdown');
+                var newAddressField = document.querySelector('.new-address');
+                
+                // Проверка значения при загрузке страницы
+                if (addressDropdown.value === 'new') {
+                    newAddressField.style.display = 'block';
+                } else {
+                    newAddressField.style.display = 'none';
+                }
+        
+                // Обработчик события изменения значения
+                addressDropdown.addEventListener('change', function() {
+                    if (this.value === 'new') {
+                        newAddressField.style.display = 'block';
+                    } else {
+                        newAddressField.style.display = 'none';
+                    }
+                });
+            });
+        </script>
 {% endblock %}

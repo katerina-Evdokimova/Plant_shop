@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, flash, session
 from flask import jsonify
 from app import app
 from data import db_session
-from query_bd import get_plant_by_id, get_popular_plants, is_admin
+from query_bd import get_plant_by_id, get_popular_plants, is_admin, is_seller, is_supplier
 from login_manager import *
 
 @app.route('/')
@@ -11,6 +11,11 @@ def home():
     db_sess = db_session.create_session()
     products = get_popular_plants(db_sess)
     try:
+        if not is_admin(db_sess, current_user.id):
+            if is_seller(db_sess, current_user.id):
+                return redirect('/admin/table?name=orders')
+            if is_supplier(db_sess, current_user.id):
+                return redirect('/admin/table?name=plants')
         return render_template('index.html', current_user=current_user, products=products, session=session, n=6, admin=is_admin(db_sess, current_user.id))
     except AttributeError:
         return render_template('index.html', current_user=current_user, products=products, session=session, n=6, admin=False)

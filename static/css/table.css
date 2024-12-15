@@ -87,3 +87,27 @@ th {
 #data-table{
     overflow: auto;
 }
+
+.editable-input {
+    width: calc(100% - 50px); /* Учитываем место для кнопок */
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.save-btn, .cancel-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 5px;
+}
+
+.save-btn {
+    color: green;
+}
+
+.cancel-btn {
+    color: red;
+}

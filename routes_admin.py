@@ -21,7 +21,8 @@ def table_view():
     # Передаем данные для таблицы
     name_table = request.args.get('name', '')
     db_sess = db_session.create_session()
-    if is_admin(db_sess, current_user.id):
+    if is_admin(db_sess, current_user.id) or is_seller(db_sess, current_user.id) and name_table == 'orders' \
+            or is_supplier(db_sess, current_user.id) and name_table == 'plants':
         title, table_data = get_table_data_by_type(db_sess, name_table)
 
         print(table_data)
@@ -36,6 +37,6 @@ def table_view():
         table_page = table_data[start:end]
 
         print(table_data[0])
-        return render_template('table.html', name_table=name_table, title=title, table=table_page, page=page, total_pages=total_pages, admin=True)
+        return render_template('table.html', name_table=name_table, title=title, table=table_page, page=page, total_pages=total_pages, admin=is_admin(db_sess, current_user.id))
     
     return redirect('login')

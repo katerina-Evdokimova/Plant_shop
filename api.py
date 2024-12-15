@@ -49,15 +49,12 @@ def get_table_data():
             column_index = int(key.split('_')[1])
             sort_config[column_index] = value
 
-    print(1)
 
     data = get_sorted_data(name_table, sort_config)
-    data = data[:20]
     # print(data)
 
     db_sess = db_session.create_session()
-    print(1)
-    print(name_table)
+
     title, table_data = get_table_data_by_type(db_sess, name_table, data)
     
     # Получаем список ролей для каждого пользователя
@@ -71,7 +68,6 @@ def get_table_data():
                 reverse = direction == 'desc'
                 # Сортируем по ролям, используя role_data для каждого user
                 table_data.sort(key=lambda x: role_data.get(x['id'], ''), reverse=reverse)
-    print(2)
 
     page = int(request.args.get('page', 1))
     start = (page - 1) * PER_PAGE
@@ -131,7 +127,7 @@ def order_statuses():
 @app.route('/api/update_status', methods=['POST'])
 def update_status():
     data = request.json
-    print(data)
+    # print(data)
 
     order_id = data.get('orderId')
     new_status = data.get('newStatus')
@@ -139,8 +135,7 @@ def update_status():
     if not order_id or not new_status:
         return jsonify({"error": "Invalid data"}), 400
 
-    # Обновляем данные в базе (здесь пример без реальной базы)
-    # Например, с использованием SQLAlchemy:
+    # Обновляем данные в базе
     db_sess = db_session.create_session()
     order = db_sess.query(Order).filter_by(id=order_id).first()
     if not order:
@@ -153,7 +148,7 @@ def update_status():
 
     db_sess.commit()
 
-    print(f"Order {order_id} updated to {new_status}")  # Для отладки
+    # print(f"Order {order_id} updated to {new_status}")  # Для отладки
     return jsonify({"success": True, "message": "Status updated"}), 200
 
 
@@ -161,11 +156,47 @@ def update_status():
 def top_products():
     return jsonify(get_top_products())
 
+@app.route('/api/update_item_field', methods=['POST'])
+def update_item():
+    print('!!!!')
+    data = request.json
+    print(data)
+
+    id_plant = data.get('id')
+    field = data.get('field')
+    value = data.get('value')
+
+    if not id_plant or not field or not value:
+        return jsonify({"error": "Invalid data"}), 400
+    
+    # Обновляем данные в базе
+    db_sess = db_session.create_session()
+    plant = db_sess.query(Plant).filter_by(id=id_plant).first()
+    if not plant:
+        return jsonify({"error": "Plant not found"}), 404
+    print(plant)
+    if field == 'Количество':
+        plant.quantity = int(value)
+    elif field == 'Цена':
+        plant.price = float(value)
+    elif field == 'Скидка':
+        if int(value) < 97:
+            plant.sale = int(value)
+        else:
+            return jsonify({"success": False, "message": "Sale > 97!!"}), 400
+
+    print("edit: ", plant)
+
+    db_sess.commit()
+
+    # print(f"Order {order_id} updated to {new_status}")  # Для отладки
+    return jsonify({"success": True, "message": "Status updated"}), 200
+
 
 def get_table_data_by_type(session, name_table: str, data=None):
     # Заголовки столбцов для каждой таблицы
     titles = {
-        'plants': ["Название", "Категория", "Цена", "Количество", "Скидка"],
+        'plants': ["id", "Название", "Категория", "Цена", "Количество", "Скидка"],
         'users': ["id", "Логин", "Почта", "Телефон", "Пол", "Имя", "Фамилия", "Дата рождения", "Дата регистрации", "Роль"],
         'orders': ["Номер заказа", "id клиента", "Статус", "Метод оплаты", "Адрес", "Дата последнего изменения"]
     }
@@ -176,11 +207,12 @@ def get_table_data_by_type(session, name_table: str, data=None):
             data = session.query(Plant).all()
         result = [
             {
-               titles['plants'][0]: plant.name,
-               titles['plants'][1]: plant.category.name if plant.category else 'Нет категории',
-               titles['plants'][2]: plant.price,
-               titles['plants'][3]: plant.quantity,
-               titles['plants'][4]: plant.sale,
+               titles['plants'][0]: plant.id,
+               titles['plants'][1]: plant.name,
+               titles['plants'][2]: plant.category.name if plant.category else 'Нет категории',
+               titles['plants'][3]: plant.price,
+               titles['plants'][4]: plant.quantity,
+               titles['plants'][5]: plant.sale,
                "href": f"plants/{plant.id}"
             }
             for plant in data
@@ -188,7 +220,7 @@ def get_table_data_by_type(session, name_table: str, data=None):
     
     elif name_table == 'users':
         if not data:
-            data = session.query(User).limit(10).all()
+            data = session.query(User).all()
         result = [
             {
                 titles[name_table][0]: user.id,

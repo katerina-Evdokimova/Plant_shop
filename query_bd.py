@@ -228,6 +228,13 @@ def is_admin(session: Session, user_id: int):
     admin = session.query(Admin).filter(Admin.user_id == user_id).first()
     return not (admin is None)
 
+def is_seller(session: Session, user_id: int):
+    seller = session.query(Seller).filter(Seller.user_id == user_id).first()
+    return not (seller is None)
+
+def is_supplier(session: Session, user_id: int):
+    supplier = session.query(Supplier).filter(Supplier.user_id == user_id).first()
+    return not (supplier is None)
 
 def get_sorted_data(table_name, sort_config):
     # Извлекаем параметры сортировки из запроса
