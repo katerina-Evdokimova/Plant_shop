@@ -192,6 +192,43 @@ def update_item():
     # print(f"Order {order_id} updated to {new_status}")  # Для отладки
     return jsonify({"success": True, "message": "Status updated"}), 200
 
+@app.route('/api/update_profile', methods=['POST'])
+def update_user():
+    print('!!!!')
+    data = request.json
+    print(data)
+    keys = data.get("keys").split(',')[:-1]
+    print(keys)
+
+    # id_plant = data.get('id')
+    # field = data.get('field')
+    # value = data.get('value')
+
+    # if not id_plant or not field or not value:
+    #     return jsonify({"error": "Invalid data"}), 400
+    
+    # # Обновляем данные в базе
+    # db_sess = db_session.create_session()
+    # plant = db_sess.query(Plant).filter_by(id=id_plant).first()
+    # if not plant:
+    #     return jsonify({"error": "Plant not found"}), 404
+    # print(plant)
+    # if field == 'Количество':
+    #     plant.quantity = int(value)
+    # elif field == 'Цена':
+    #     plant.price = float(value)
+    # elif field == 'Скидка':
+    #     if int(value) < 97:
+    #         plant.sale = int(value)
+    #     else:
+    #         return jsonify({"success": False, "message": "Sale > 97!!"}), 400
+
+    # print("edit: ", plant)
+
+    # db_sess.commit()
+
+    # # print(f"Order {order_id} updated to {new_status}")  # Для отладки
+    # return jsonify({"success": True, "message": "Status updated"}), 200
 
 def get_table_data_by_type(session, name_table: str, data=None):
     # Заголовки столбцов для каждой таблицы

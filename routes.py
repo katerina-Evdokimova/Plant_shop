@@ -15,6 +15,7 @@ from data.address import Address
 from data.order import Order
 from wtf_flask.login_form import LoginForm
 from wtf_flask.register_form import RegistrationForm
+from wtf_flask.edit_profile import ProfileForm
 from login_manager import *
 from routes_admin import *
 from routes_error import *
@@ -243,20 +244,52 @@ def login():
     
     return render_template('login.html', form=form, admin=False, title='Логин')
 
-@app.route('/account')
-def account():
-    if current_user.is_authenticated:
-        db_sess = db_session.create_session()
-        user = db_sess.query(User).filter(User.id == current_user.id).first()
-        client_id = get_client_by_id(db_sess, current_user.id).id
-        adress = [el for el in get_address_by_id(db_sess, client_id)]
-        adress = adress if adress else []
-        print(adress)
+@app.route('/account', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).filter(User.id == current_user.id).first()
+    
+    # Передаем данные пользователя в форму
+    form = ProfileForm(obj=user)
 
-        return render_template('profile.html', user=user, addresses=adress, admin=False, title='Аккаунт')
+    if request.method == 'POST' and form.validate_on_submit():
+        changes = []
 
-    else:
-        return redirect(url_for('login'))
+        # Сравниваем и обновляем только измененные поля
+        if user.login != form.login.data:
+            user.login = form.login.data
+            changes.append("логин")
+        if user.email != form.email.data:
+            user.email = form.email.data
+            changes.append("email")
+        if user.phone != form.phone.data:
+            user.phone = form.phone.data
+            changes.append("телефон")
+        if user.gender != form.gender.data:
+            user.gender = form.gender.data
+            changes.append("пол")
+        if user.first_name != form.first_name.data:
+            user.first_name = form.first_name.data
+            changes.append("имя")
+        if user.last_name != form.last_name.data:
+            user.last_name = form.last_name.data
+            changes.append("фамилия")
+        if user.middle_name != form.middle_name.data:
+            user.middle_name = form.middle_name.data
+            changes.append("отчество")
+
+        # Проверяем изменение пароля
+        if form.new_password.data:
+            user.password = generate_password_hash(form.new_password.data)
+            changes.append("пароль")
+
+        # Сохраняем изменения
+        db_sess.commit()
+        flash(f"Обновлены поля: {', '.join(changes)}", "success")
+        return redirect('/account')
+
+    return render_template('profile.html', form=form)
     
 
 @app.route('/seller')
