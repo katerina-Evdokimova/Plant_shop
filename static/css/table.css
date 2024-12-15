@@ -83,3 +83,7 @@ th {
     display: none; /* Скрыто по умолчанию */
     width: 150px; /* Задайте ширину по вашему усмотрению */
 }
+
+#data-table{
+    overflow: auto;
+}
