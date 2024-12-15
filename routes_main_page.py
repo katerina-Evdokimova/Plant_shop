@@ -10,7 +10,11 @@ from login_manager import *
 def home():
     db_sess = db_session.create_session()
     products = get_popular_plants(db_sess)
-    return render_template('index.html', current_user=current_user, products=products, session=session, n=6, admin=is_admin(db_sess, current_user.id) if current_user else False)
+    try:
+        return render_template('index.html', current_user=current_user, products=products, session=session, n=6, admin=is_admin(db_sess, current_user.id))
+    except AttributeError:
+        return render_template('index.html', current_user=current_user, products=products, session=session, n=6, admin=False)
+
 
 
 @app.route('/add_to_cart', methods=['POST'])

@@ -32,6 +32,8 @@
 
 .item-name {
     font-size: 18px;
+    text-align: left;
+    color: #000;
     margin: 0;
 }
 
@@ -78,14 +80,14 @@
     height: 20px;
 }
 .item-price {
-    font-size: 1.5em; /* Размер шрифта для категории и цены */
+    font-size: 1em; /* Размер шрифта для категории и цены */
     margin-bottom: 10px;
     color: #000;
 }
 /* Итоговая цена (со скидкой) */
 .discounted-price {
     color: rgba(210, 58, 1, 1); /* Красная цена */
-    font-size: 1em;
+    font-size: 0.7em;
 }
 
 /* Бейдж скидки */

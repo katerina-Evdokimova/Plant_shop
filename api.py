@@ -125,7 +125,6 @@ def order_statuses():
 
 @app.route('/api/update_status', methods=['POST'])
 def update_status():
-    print('***********' * 8)
     data = request.json
     print(data)
 
